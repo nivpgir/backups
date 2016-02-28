@@ -45,6 +45,7 @@
 (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 
+
 (semantic-mode 1)
 
 (semantic-add-system-include "/usr/include/boost")
@@ -63,7 +64,11 @@
 (setq-default tab-width 4)
 ;;use space to indent by default
 (setq-default indent-tabs-mode t)
+;;automatically put closing brackets
+(electric-pair-mode 1)
 
 
 ;;folding in c/c++-mode
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
+
+ 

@@ -1,6 +1,0 @@
-(provide 'my-projectile-setup)
-
-;;enable projectile
-(projectile-global-mode)
-
-

@@ -71,4 +71,5 @@
 ;;folding in c/c++-mode
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
 
- 
+;;make thefolding shorcuts work
+(add-hook 'prog-mode-hook 'hs-minor-mode)

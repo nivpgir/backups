@@ -49,3 +49,43 @@
 ;;activate volatile highlights
 (volatile-highlights-mode t)
 
+
+;;setup semantic C/C++ completions
+(require 'cc-mode)
+(require 'semantic)
+(require 'stickyfunc-enhance)
+(global-semanticdb-minor-mode 1)
+;;;parse even if not explicilty told to
+(global-semantic-idle-scheduler-mode 1)
+;;;show function in minibuffer
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+
+
+(semantic-mode 1)
+
+(semantic-add-system-include "/usr/include/boost")
+(semantic-add-system-include "~/linux/kernel")
+(semantic-add-system-include "~/linux/include")
+
+
+;;enable projectile
+(projectile-global-mode)
+
+;;set style to "linux"
+(setq c-default-style "linux")
+;;set the offset to 4
+(setq c-basic-offset 4)
+;; set appearance of a tab that is represented by 4 spaces
+(setq-default tab-width 4)
+;;use space to indent by default
+(setq-default indent-tabs-mode t)
+;;automatically put closing brackets
+(electric-pair-mode 1)
+
+
+;;folding in c/c++-mode
+(add-hook 'c-mode-common-hook   'hs-minor-mode)
+
+;;make thefolding shorcuts work
+(add-hook 'prog-mode-hook 'hs-minor-mode)

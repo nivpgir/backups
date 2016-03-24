@@ -18,6 +18,13 @@
 (volatile-highlights-mode t)
 ;;make backup files only in "~/.saves":
 (setq backup-directory-alist `(("." . "~/.saves")))
+;;settings for gdb:
+;;; use gdb-many-windows by default
+(setq gdb-many-windows t)
+;;; Non-nil means display source file containing the main routine at startup
+(setq gdb-show-main t)
+
+
 
 (provide 'my-settings)
 ;;; my-settings.el ends here

@@ -1,5 +1,7 @@
 (provide 'my-settings)
 
+;;unbinding C-m from RET
+(define-key input-decode-map [?\C-m] [C-m])
 ;;use ibuffer instead of list-buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 ;;set theme zenburn
@@ -23,6 +25,15 @@
 (setq gdb-many-windows t)
 ;;; Non-nil means display source file containing the main routine at startup
 (setq gdb-show-main t)
+
+
+;;navigate using i,k,j,l keys as <up> <down> <left> <right> accordingly
+(global-set-key (kbd "H-j") 'left-char)
+(global-set-key (kbd "H-l") 'right-char)
+(global-set-key (kbd "C-H-j") 'left-word)
+(global-set-key (kbd "C-H-l") 'right-word)
+(global-set-key (kbd "H-i") 'previous-line)
+(global-set-key (kbd "H-k") 'next-line)
 
 
 

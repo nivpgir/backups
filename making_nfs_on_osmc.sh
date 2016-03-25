@@ -18,7 +18,7 @@ fi
 
 #then add to /etc/exports the shared directory
 
-echo -e  "\n $1 10.0.0.0/24(rw,async,no_subtree_check)asdfsdaf\n" >> /etc/exports
+echo -e  "\n $1 10.0.0.0/24(rw,async,no_subtree_check)\n" >> /etc/exports
 
 #finally, restart the nfs service:
 

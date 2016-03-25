@@ -16,7 +16,7 @@
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   (quote (flycheck flycheck-tip nyan-mode golden-ratio-scroll-screen golden-ratio projectile projectile-codesearch projectile-speedbar company sr-speedbar stickyfunc-enhance ggtags geiser undo-tree volatile-highlights yasnippet))))
+   (quote (helm flycheck flycheck-tip nyan-mode golden-ratio-scroll-screen golden-ratio projectile projectile-codesearch projectile-speedbar company sr-speedbar stickyfunc-enhance ggtags geiser undo-tree volatile-highlights yasnippet))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -33,3 +33,4 @@
 (require 'my-flycheck-setup)
 (require 'my-custom-funcs)
 (require 'my-settings)
+(require 'my-helm-setup)

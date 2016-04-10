@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/bash -x
 
 #first download all necessary tools for nfs:
-sudo apt-get install nfs-kernel-server nfs-common portmap nmap
+apt-get install nfs-kernel-server nfs-common portmap nmap
 
 #next create the shared dir if necessary
-if [[ $1 = ""]]
+if [[ $1 = "" ]]
 then
 	echo "must give a path to the shared directory"
 	exit 1
@@ -18,11 +18,15 @@ fi
 
 #then add to /etc/exports the shared directory
 
-echo -e  "\n $1 10.0.0.0/24(rw,async,no_subtree_check)\n" >> /etc/exports
+if [ $(cat /etc/exports | grep "$1" | wc -l) = 0 ]
+then
+	echo -e  "\n $1 10.0.0.0/24(rw,async,no_subtree_check)\n" >> /etc/exports
+fi
+
 
 #finally, restart the nfs service:
 
-sudo service nfs-kernel-service restart
+service nfs-kernel-service restart
 
 
 echo "now ssh to the osmc (username:osmc password:osmc) and add to /etc/fstab the following line:"

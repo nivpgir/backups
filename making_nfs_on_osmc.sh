@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash 
 
 #first download all necessary tools for nfs:
 apt-get install nfs-kernel-server nfs-common portmap nmap

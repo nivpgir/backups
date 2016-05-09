@@ -9,9 +9,9 @@
 # layout, use the i3-config-wizard
 #
 
-xmodmap /home/niv/.config/i3/.Xmodmap
+exec "xmodmap /home/niv/.config/i3/.Xmodmap"
 
-#set CapsLock as the $mod
+#Set Capslock As The $mod
 set $mod Mod4
 #set WinKey as $mod3
 set $mod3 Mod3
@@ -193,7 +193,8 @@ bindsym $mod3+b exec chromium
 bindsym $mod3+e exec emacs
 bindsym $mod+Control+Left move workspace to output left
 bindsym $mod+Control+Right move workspace to output right
-
+bindsym Print exec scrot
+bindsym Shift+Print --release exec scrot -s
 
 #layout changing:
 exec setxkbmap -option grp:shifts_toggle us,il

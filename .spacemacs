@@ -28,7 +28,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     
 
      auto-completion
      ;; better-defaults
@@ -261,6 +260,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
+
+  (global-linum-mode) ;globally show line numbers
+  (global-centered-cursor-mode) ;globally center on the cursor
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

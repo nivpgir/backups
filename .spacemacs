@@ -266,7 +266,8 @@ you should place you code here."
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
   (global-linum-mode) ;globally show line numbers
   (global-centered-cursor-mode) ;globally center on the cursor
-
+  (setq-default javascript-disable-tern-port-files nil)
+  
   ;;;smarter 'goto-beggining-of-line':
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.

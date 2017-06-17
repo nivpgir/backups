@@ -18,10 +18,13 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     asciidoc
      python
      html
      javascript
      games
+     extra-langs
+     c-c++
      ;; latex
 
      ;; ----------------------------------------------------------------
@@ -263,9 +266,9 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (global-linum-mode) ;globally show line numbers
+  (global-linum-mode t) ;globally show line numbers
   (global-centered-cursor-mode) ;globally center on the cursor
-
+  
   ;;;smarter 'goto-beggining-of-line':
   (defun smarter-move-beginning-of-line (arg)
     "Move point back to indentation of beginning of line.
@@ -295,6 +298,15 @@ point reaches the beginning or end of the buffer, stop there."
                   'smarter-move-beginning-of-line)
   (global-set-key (kbd "C-;") 'er/expand-region)
 
+  ;;enable company-flx for fuzzy completion in complay-idle-completion
+  ;;(with-eval-after-load 'company
+  ;;  (company-flx-mode +1))
+
+  (setq company-search-regexp-function (lambda (search-term)
+                                         (mapconcat 'identity (seq-map 'string search-term) ".*")
+                                         )
+        )
+
 
   );; end of user-config
 
@@ -307,7 +319,7 @@ point reaches the beginning or end of the buffer, stop there."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-auctex auctex-latexmk auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic typit mmt pacmacs 2048-game web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data smeargle orgit org magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-tern dash-functional company-statistics company auto-yasnippet ac-ispell auto-complete tern web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
+    (company-flx winum sudoku fuzzy adoc-mode markup-faces disaster company-c-headers cmake-mode clang-format wolfram-mode thrift stan-mode scad-mode qml-mode matlab-mode julia-mode arduino-mode company-auctex auctex-latexmk auctex yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode company-anaconda anaconda-mode pythonic typit mmt pacmacs 2048-game web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data smeargle orgit org magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor company-tern dash-functional company-statistics company auto-yasnippet ac-ispell auto-complete tern web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide ido-vertical-mode hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async quelpa package-build spacemacs-theme)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -43,6 +43,7 @@ values."
      common-lisp
      (clojure :variables
               clojure-enable-fancify-symbols t)
+
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or

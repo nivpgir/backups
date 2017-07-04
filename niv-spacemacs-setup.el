@@ -25,9 +25,11 @@ point reaches the beginning or end of the buffer, stop there."
       (move-beginning-of-line 1))))
 
 
-; Configuration:
-;; idk:
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+;;; Configuration:
+
+;; change highlight parantheses to highlight all contained expression
+(setq show-paren-style 'expression)
+
 ;; globally center on the cursor
 (global-centered-cursor-mode)
 ;;enable company-flx for fuzzy completion in complay-idle-completion
@@ -42,8 +44,11 @@ point reaches the beginning or end of the buffer, stop there."
 ;; to remove currnetly selected region on type without having to manually delete
 (delete-selection-mode)
 
+;; set chrome as the default browser
+(setq browse-url-browser-function 'browse-url-chrome)
 
-; Keybinds:
+
+;;; Keybinds:
 ;; remap C-a to `smarter-move-beginning-of-line'
 (global-set-key [remap move-beginning-of-line]
                 'smarter-move-beginning-of-line)

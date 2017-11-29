@@ -1,0 +1,75 @@
+# Base16 Atelier Cave
+# Author: Bram de Haan (http://atelierbramdehaan.nl)
+
+foreground      = #a6a28c
+foreground_bold = #a6a28c
+cursor          = #e2dfe7
+background      = rgba(9 , 3, 0, 0.9) 
+#19171c
+#090300
+
+# 16 color space
+
+# Black, Gray, Silver, White
+color0  = #19171c
+color8  = #655f6d
+color7  = #8b8792
+color15 = #efecf4
+
+# Red
+color1  = #be4678
+color9  = #be4678
+
+# Green
+color2  = #2a9292
+color10 = #2a9292
+
+# Yellow
+color3  = #a06e3b
+color11 = #a06e3b
+
+# Blue
+color4  = #576ddb
+color12 = #576ddb
+
+# Purple
+color5  = #955ae7
+color13 = #955ae7
+
+# Teal
+color6  = #398bc6
+color14 = #398bc6
+
+# Extra colors
+color16 = #aa573c
+color17 = #bf40bf
+color18 = #26232a
+color19 = #585260
+color20 = #7e7887
+color21 = #e2dfe7
+
+
+
+# 20% background transparency (requires a compositor)
+#background = rgba(63, 63, 63, 0.8)
+
+# if unset, will reverse foreground and background
+# highlight = #2f2f2f
+
+# colors from color0 to color254 can be set
+color0 = #3f3f3f
+color1 = #705050
+color2 = #60b48a
+color3 = #dfaf8f
+color4 = #506070
+color5 = #dc8cc3
+color6 = #8cd0d3
+color7 = #dcdccc
+color8 = #709080
+color9 = #dca3a3
+color10 = #c3bf9f
+color11 = #f0dfaf
+color12 = #94bff3
+color13 = #ec93d3
+color14 = #93e0e3
+color15 = #ffffff

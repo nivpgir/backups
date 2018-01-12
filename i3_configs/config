@@ -456,11 +456,12 @@ exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers/*
 bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
 
 # ipc script to change the workspace name appropriately
-exec --no-startup-id $i3confdir/ipc-submit-events.py
+# doesn't always start, so we exec always to restart it with i3
+exec_always $i3confdir/ipc-submit-events.py
 
 ## quick terminal
 exec --no-startup-id termite --name dropdown
 for_window [instance="dropdown"] floating enable;
-for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move position 0px 22px; resize set 1920 px 200 px; move scratchpad
+for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move position 0px 22px; resize set 1920 px 300 px; move scratchpad
 bindsym $mod+t [instance="dropdown"] scratchpad show
 

@@ -6,9 +6,12 @@
 ;;remap C-; to expand-region
 (global-set-key (kbd "C-;") 'er/expand-region)
 
+;; set C-c C-d to duplicate line
+(global-set-key (kbd "C-c d") 'spacemacs/duplicate-line-or-region)
 
-(global-set-key (kbd  "C-/"  ) nil)
+;; set C-/ to 'undo'
+(global-set-key (kbd  "C-/") nil)
 
 (define-key undo-tree-map (kbd "C-/")  nil)
 
-(global-set-key  (kbd  "C-/"  ) 'comment-line)
+(global-set-key  (kbd  "C-/") 'comment-line)

@@ -9,12 +9,11 @@
 # layout, use the i3-config-wizard
 #
 set $i3confdir /home/nivpgir/.config/i3
-
-
 #Set Capslock As The $mod
-set $mod Mod4
-#set WinKey as $mod3
-set $mod3 Mod3
+set $mod Mod3 
+#set WinKey as $mod4
+set $win Mod4
+bindsym $win+r restart
 
 #set mod+e exec emacs
 
@@ -50,7 +49,7 @@ floating_modifier $mod
 # start a terminal
 # bindsym $mod+Return exec termite # i3-sensible-terminal
 # start a terminal in WS1
-bindsym $mod+Return exec workspace $WS1; exec termite # i3-sensible-terminal
+bindsym $mod+Return exec termite # i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -236,6 +235,7 @@ for_window [class="Pavucontrol"] floating enable border normal
 for_window [class="Transmission-gtk"] floating enable border normal
 for_window [class="Plumapl"] floating enable border normal
 #for_window [class="(?i)virtualbox"] floating enable border normal
+for_window [class="Matplotlib"] floating enable border normal
 
 # Assign borderless windows
 for_window [class="Firefoxy"] enable border pixel 1
@@ -381,13 +381,13 @@ bindsym $mod+F6 workspace $WS9; exec gksudo gparted
 bindsym $mod+Shift+F6 workspace $WS9; exec gksudo lightdm-gtk-greeter-settings
 
 # browser
-bindsym $mod3+b workspace $WS2; exec chromium # vivaldi-stable
+bindsym $win+b workspace $WS2; exec chromium # vivaldi-stable
 
 #text editor
-bindsym $mod3+e exec emacsclient -c
+bindsym $win+e exec emacsclient -c
 
 # file manager
-bindsym $mod3+f exec caja
+bindsym $win+f exec caja
 
 #       Call image edit
 bindsym Shift+F4 workspace $WS7; exec inkscape
@@ -417,6 +417,7 @@ bindsym XF86MonBrightnessDown exec sudo backlight -5% # decrease screen brightne
 
 # keyboard layout changing:
 exec --no-startup-id setxkbmap -option grp:shifts_toggle us,il
+exec --no-startup-id setxkbmap -option caps:hyper
 
 #       Auto locker
 exec --no-startup-id xautolock -time 10 -locker i3lock-fancy
@@ -446,12 +447,11 @@ exec --no-startup-id blueman-applet # bluetooth
 #disk automounting:
 exec --no-startup-id udiskie&
 
-# set capslock as hyper and others
-exec_always --no-startup-id xmodmap $i3confdir/.Xmodmap
 
 
 # set the wallpaper
-exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers/*
+# exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers/*
+exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/wallhaven-572946.jpg 
 # make a shortcut to change the wallpaper in case it's in the way of stuff:
 bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
 
@@ -460,8 +460,13 @@ bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
 exec_always $i3confdir/ipc-submit-events.py
 
 ## quick terminal
+bindsym $mod+Shift+t exec --no-startup-id termite --name dropdown;
 exec --no-startup-id termite --name dropdown
 for_window [instance="dropdown"] floating enable;
 for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move position 0px 22px; resize set 1920 px 300 px; move scratchpad
 bindsym $mod+t [instance="dropdown"] scratchpad show
 
+# set capslock as hyper and others
+exec_always --no-startup-id xkbcomp -I$HOME/.xkbconf ~/.xkbconf/keymap/custom $DISPLAY
+
+exec termite

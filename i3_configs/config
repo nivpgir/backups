@@ -112,16 +112,16 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+z focus parent
 
 #::::::::::::::::::::::: Customize workspace name :::::::::::::::::::::::::::::#
-set $WS1   1:  Bash
-set $WS2   2:  Web
-set $WS3   3:  Code
-set $WS4   4:  File
-set $WS5   5:  Media
-set $WS6   6:  Chat
-set $WS7   7:  Doc
-set $WS8   8:  Down
-set $WS9   9:  Conf
-set $WS0   10:  Games
+# set $WS1   1:  Bash
+# set $WS2   2:  Web
+# set $WS3   3:  Code
+# set $WS4   4:  File
+# set $WS5   5:  Media
+# set $WS6   6:  Chat
+# set $WS7   7:  Doc
+# set $WS8   8:  Down
+# set $WS9   9:  Conf
+# set $WS0   10:  Games
 
 
 # focus the child container

@@ -8,14 +8,13 @@
 # To get a config file with the same key positions, but for your current
 # layout, use the i3-config-wizard
 #
-set $i3confdir /homes/nivp/.config/i3
+set $i3confdir ~/.config/i3
 #Set Capslock As The $mod
 set $mod Mod3
 #set WinKey as $mod4
 set $win Mod4
 bindsym $win+r restart
 
-#set mod+e exec emacs
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -384,7 +383,8 @@ bindsym $mod+Shift+F6 workspace $WS9; exec gksudo lightdm-gtk-greeter-settings
 bindsym $win+b exec google-chrome # vivaldi-stable
 
 #text editor
-bindsym $win+e exec emacsclient -c -a emacs
+set $emacs emacsclient -q -c -a ''
+bindsym $win+e exec $emacs
 
 # file manager
 bindsym $win+f exec caja

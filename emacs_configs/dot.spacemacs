@@ -32,17 +32,17 @@ This function should only modify configuration layer settings."
    '(ruby
      graphviz
                                         ;platformio
-     ;; javascript
-     ;; php
-     ;; erc
-     ;; floobits
-     ;; common-lisp
-     ;; (clojure :variables
-     ;;          clojure-enable-fancify-symbols t)
+     javascript
+     php
+     erc
+     floobits
+     common-lisp
+     (clojure :variables
+              clojure-enable-fancify-symbols t)
 
      ;; should replace extra-langs, although it doesnt seem to have
      ;;much effect on arduno mode
-     ;; major-modes
+     major-modes
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-default-style "ellemtel"
@@ -57,7 +57,8 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip nil)
      emacs-lisp
-     ;; pdf-tools
+     org
+     pdf-tools
      csv
      markdown
      asciidoc

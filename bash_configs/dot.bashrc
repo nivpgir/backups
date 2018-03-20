@@ -5,7 +5,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-EMACS_CLIENT=emacsclient -q -c -n -a ''
+EMACS_CLIENT="emacsclient -q -c -n -a ''"
 export EDITOR=$EMACS_CLIENT
 export VISUAL=$EMACS_CLIENT
 export BROWSER='chromium'

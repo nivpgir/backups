@@ -2,6 +2,7 @@
 alias em="emacsclient -t"
 alias emacs="emacsclient -q -n -c -a '' $@"
 alias dirs="dirs -v"
+alias gstat="git status"
 
 
 set_prompt () {
@@ -48,19 +49,19 @@ with_exynos_toolchain() {
 }
 
 with_atsamg55_toolchain() {
+    # saving original env
     OLD_PATH=$PATH
     OLD_ARCH=$ARCH
     OLD_CC=$CROSS_COMPILE
+    # overiding cross compilation environment
     PATH=/homes/nivp/local/toolchains/arm-gnu-4.8.4.371-linux-any/bin:$PATH
     ARCH=cortex-m4
     CROSS_COMPILE="arm-none-eabi-gcc"
-    echo $@
+    # running command
     $@
+    # restoring old env
     PATH=$OLD_PATH
     ARCH=$OLD_ARCH
     CROSS_COMPILE=$OLD_CC
-    echo $PATH
-    echo $ARCH
-    echo $CROSS_COMPILE
 }
 

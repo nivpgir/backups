@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# linking bash configs
+backup_if_exists(){
+    [ -e $1 ] && mv $1 $1.bak
+}
+
+prefixed_basename(){
+    # if it's a hidden file, we need to prefix "dot" to it,
+    # cause that's how I keep dotfiles in the repo
+    local base=`basename $1`
+    # local dir=`dirname $1`
+    local prefixed=${base/./dot.}
+    if [ ! -z "$2" ]; then
+        eval $2="'$prefixed'"
+    else
+        echo $prefixed
+    fi
+}
+
+backup_orig_and_link_new(){
+    backup_if_exists $2
+    ln -s $1 $2
+
+}
+
+# conf_files="$HOME/.bashrc $HOME/.bash_aliases"
+conf_files="$HOME/.bashrc $HOME/.bash_aliases"
+# each file is given as a full path to where the link needs to be
+for f in $conf_files; do
+    # if the file exists we backupto make room for the link
+    backup_if_exists $f
+    # then we prefix with "dot" cause we don't keep the files hidden in the repo
+    # and also take only the basename because the files should be here locally
+    # and we'll take the realpath to them
+    prefixed_basename $f target
+    ln -s $(realpath $target) $f
+done

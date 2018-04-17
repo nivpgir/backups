@@ -1,0 +1,6 @@
+* directories that still don't have a conf_setup.sh:
+  - emacs
+  - lyx
+  - zsh (not really being used anyways)
+  - termite (not really beind used anyways)
+  

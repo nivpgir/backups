@@ -1,0 +1,1 @@
+../link_conf_dir.sh

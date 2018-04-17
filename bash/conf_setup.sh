@@ -2,7 +2,25 @@
 
 # linking bash configs
 backup_if_exists(){
-    [ -e $1 ] && mv $1 $1.bak
+    # if the file itself exists, and there is no backup file,
+    # create a backup file and exit
+    if [ -e $1 ]; then
+        if [ ! -e $1.bak ]; then
+            local backup_file=$1.bak
+            echo backing up $1 to $backup_file
+        else
+            # else, while filename.bak.$i exists, increment i, then create filename.bak.$i
+            i=1
+            while [ -e $1.bak.$i ]; do
+                echo $1.bak.$i exists...
+                ((i++))
+            done
+            local backup_file=$1.bak.$i
+            echo backing up $1 to $backup_file
+        fi
+        mv $1 $backup_file
+    fi
+    # if file doesn't exist, we have nothing to do
 }
 
 prefixed_basename(){

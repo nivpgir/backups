@@ -26,8 +26,8 @@ export PS1='[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=50000
+HISTSIZE=100000
+HISTFILESIZE=500000
 HISTFILE=/home/$USER/.histfile
 
 
@@ -65,10 +65,5 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
-fi
-
-# enable exercism completion:
-if [ -f ~/.config/exercism/exercism_completion.bash ]; then
-    . ~/.config/exercism/exercism_completion.bash
 fi
 

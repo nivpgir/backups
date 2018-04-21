@@ -46,7 +46,7 @@ set $right d
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal # termite
+bindsym $mod+Return exec termite # i3-sensible-terminal
 
 
 # kill focused window

@@ -26,8 +26,8 @@ export PS1='[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=500000
+HISTSIZE=1000000
+HISTFILESIZE=2000000
 HISTFILE=/home/$USER/.histfile
 
 

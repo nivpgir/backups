@@ -110,16 +110,16 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+z focus parent
 
 #::::::::::::::::::::::: Customize workspace name :::::::::::::::::::::::::::::#
-set $WS1   1:  Bash
-set $WS2   2:  Web
-set $WS3   3:  Code
-set $WS4   4:  File
-set $WS5   5:  Media
-set $WS6   6:  Chat
-set $WS7   7:  Doc
-set $WS8   8:  Down
-set $WS9   9:  Conf
-set $WS0   10:  Games
+# set $WS1   1:  Bash
+# set $WS2   2:  Web
+# set $WS3   3:  Code
+# set $WS4   4:  File
+# set $WS5   5:  Media
+# set $WS6   6:  Chat
+# set $WS7   7:  Doc
+# set $WS8   8:  Down
+# set $WS9   9:  Conf
+# set $WS0   10:  Games
 
 
 # focus the child container
@@ -414,7 +414,7 @@ bindsym XF86MonBrightnessDown exec sudo backlight -5% # decrease screen brightne
 
 
 #       Auto locker
-exec --no-startup-id xautolock -time 10 -locker i3lock-fancy
+exec --no-startup-id xautolock -time 10 -locker gnome-screensaver-command
 
 #       Conky
 exec --no-startup-id conky -d; sleep 1 && transset-df .5 -n Conky &
@@ -422,36 +422,8 @@ exec --no-startup-id conky -d; sleep 1 && transset-df .5 -n Conky &
 #		Dunst
 exec --no-startup-id dunst -config ~/.config/dunst/dunstrc
 
-
-# mate integration
-exec --no-startup-id /usr/lib/mate-settings-daemon/mate-settings-daemon
-
-
-exec --no-startup-id xrdb /home/nivpgir/.Xresources
-
 # composer for smooth window transformations
 exec --no-startup-id compton
-
-# tray applets
-exec --no-startup-id nm-applet #network
-exec --no-startup-id blueman-applet # bluetooth
-# exec --no-startup-id volctl #audio
-# exec --no-startup-id mate-power-manager #battery
-
-#disk automounting:
-exec --no-startup-id udiskie&
-
-
-
-# set the wallpaper
-# exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers/*
-exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/wallhaven-572946.jpg 
-# make a shortcut to change the wallpaper in case it's in the way of stuff:
-bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
-
-# ipc script to change the workspace name appropriately
-# doesn't always start, so we exec always to restart it with i3
-# exec_always $i3confdir/ipc-submit-events.py
 
 ## quick terminal
 bindsym $mod+Shift+t exec --no-startup-id termite --name dropdown;

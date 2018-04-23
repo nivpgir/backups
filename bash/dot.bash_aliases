@@ -37,5 +37,3 @@ alias gpush="git push"
 alias gpull="git pull"
 alias gfetch="git fetch"
 alias ga="git add"
-
-alias diff="diff --color"

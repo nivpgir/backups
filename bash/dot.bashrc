@@ -11,7 +11,7 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 EMACS_CLIENT="emacsclient -q -c -n -a ''"
-export EDITOR=$EMACS_CLIENT
+export EDITOR=$EMACS_TERM_CLIENT
 export VISUAL=$EMACS_CLIENT
 export BROWSER='chromium'
 

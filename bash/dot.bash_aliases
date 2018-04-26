@@ -5,11 +5,11 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # some more ls aliases
-alias ls='ls --color=auto'
-alias ll='ls -lF --color=auto'
-alias lal='ls -al --color=auto'
-alias la='ls -a --color=auto'
-alias l='ls -CF --color=auto'
+alias ls='ls -h --color=auto'
+alias ll='ls -lhF --color=auto'
+alias lal='ls -alh --color=auto'
+alias la='ls -ah --color=auto'
+alias l='ls -CFh --color=auto'
 
 # prettier pushd stack printing
 alias d='dirs -v'

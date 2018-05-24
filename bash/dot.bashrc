@@ -10,6 +10,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# load local bash completions
+if [ -d ~/.local/etc/bash_completion.d ]; then
+    for f in ~/.local/etc/bash_completion.d/*; do
+        . $f
+    done
+fi
+
 EMACS_CLIENT="emacsclient -q -c -n -a ''"
 export EDITOR=$EMACS_TERM_CLIENT
 export VISUAL=$EMACS_CLIENT

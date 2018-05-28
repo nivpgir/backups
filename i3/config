@@ -213,7 +213,7 @@ bindsym $mod+r mode "resize"
 #:::::::::::::::::::::::::::::: Style border ::::::::::::::::::::::::::::::::::#
 
 # <normal|1pixel|pixel xx|none|pixel> #
-new_window pixel 1
+new_window pixel 3
 new_float normal
 
 #       Disable border window
@@ -352,6 +352,7 @@ mode "$mode_system" {
     bindsym p exec --no-startup-id systemctl poweroff -i, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    # bindsym e exec --no-startup-id gnome-session-quit, mode "default"
 
 #   back to normal: Enter or Escape
 
@@ -434,5 +435,16 @@ bindsym $mod+t [instance="dropdown"] scratchpad show
 
 # set capslock as hyper and others
 exec_always --no-startup-id xkbcomp -I$HOME/.config/i3/xkbconf ~/.config/i3/xkbconf/keymap/custom $DISPLAY
+
+exec --no-startup-id unity-settings-daemon
+
+# exec --no-startup-id dbus-send \
+#     --session \
+#     --print-reply=literal \
+#     --dest=org.gnome.SessionManager \
+#     "/org/gnome/SessionManager" \
+#     org.gnome.SessionManager.RegisterClient \
+#     "string:i3" \
+#     "string:$DESKTOP_AUTOSTART_ID"
 
 exec --no-startup-id emacs --daemon

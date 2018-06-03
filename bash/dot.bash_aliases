@@ -40,3 +40,8 @@ alias gfetch="git fetch"
 alias ga="git add"
 
 alias diff="diff --color"
+
+# calcualations:
+function calc(){
+		echo "$(( $@ ))"
+}

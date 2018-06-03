@@ -448,7 +448,8 @@ exec --no-startup-id udiskie&
 # exec --no-startup-id feh --randomize --bg-fill ~/Pictures/wallpapers/*
 exec --no-startup-id feh --bg-fill ~/Pictures/wallpapers/wallhaven-572946.jpg 
 # make a shortcut to change the wallpaper in case it's in the way of stuff:
-bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
+# bindsym $mod+grave exec feh --randomize --bg-fill ~/Pictures/wallpapers/*
+
 
 # ipc script to change the workspace name appropriately
 # doesn't always start, so we exec always to restart it with i3

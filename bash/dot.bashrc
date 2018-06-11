@@ -42,16 +42,45 @@ export BROWSER='chromium'
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
-PS1='[\u@\h \W]\$ '
-export PS1='[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]] $(parse_git_branch)\n\[\033[1;32m\]$ \[\033[00m\]'
+
+set_prompt(){
+    Last_Command=$? # Must come first!
+    Blue='\[\e[01;34m\]'
+    White='\[\e[01;37m\]'
+    Red='\[\e[01;31m\]'
+    Green='\[\e[01;32m\]'
+    Orcam1='\[\e[00;36m\]'
+    Orcam2='\[\e[01;33m\]'
+    Reset='\[\033\e[0m\]'
+    FancyX='\342\234\227'
+    Checkmark='\342\234\223'
+    NoColor='\[\e[0m\]'
+
+
+    PS1=""
+    # If it was successful, print a green check mark. Otherwise, print
+    # a red X.
+    if [[ $Last_Command == 0 ]]; then
+        PS1="$Green$Checkmark "
+	      PS1XTERM="${Green}V "
+    else
+        PS1="$Red$FancyX "
+	      PS1XTERM="${Red}X "
+    fi
+
+    export PS1="${PS1}${White}"'[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]] $(parse_git_branch)\n\[\033[1;32m\]$ \[\033[00m\]'
+
+}
+
+export PROMPT_COMMAND="set_prompt"
 
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=50000
+HISTSIZE=1000000
+HISTFILESIZE=2000000
 HISTFILE=/home/$USER/.histfile
 
 

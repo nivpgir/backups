@@ -74,7 +74,6 @@ set_prompt(){
 
 export PROMPT_COMMAND="set_prompt"
 
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 

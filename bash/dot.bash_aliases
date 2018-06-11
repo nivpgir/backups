@@ -5,10 +5,10 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # some more ls aliases
-alias ls='ls -h --color=auto'
+alias ls='ls -CFh --color=auto'
 alias ll='ls -lhF --color=auto'
-alias lal='ls -alh --color=auto'
-alias la='ls -ah --color=auto'
+alias lal='ls -alhF --color=auto'
+alias la='ls -ahF --color=auto'
 alias l='ls -CFh --color=auto'
 
 # prettier pushd stack printing
@@ -37,3 +37,8 @@ alias gpush="git push"
 alias gpull="git pull"
 alias gfetch="git fetch"
 alias ga="git add"
+
+# calcualations:
+function calc(){
+		echo "$(( $@ ))"
+}

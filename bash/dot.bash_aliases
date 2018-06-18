@@ -42,3 +42,10 @@ alias ga="git add"
 function calc(){
 		echo "$(( $@ ))"
 }
+
+function rename_workspace(){
+    newname=`i3-msg -t get_workspaces |
+                    jq  'map(select(.focused)) | .[] | .name' |
+                    sed -r -e "s/\"([0-9]:[0-9]:).*\"/\1$1/"`
+    i3-msg rename workspace to $newname
+}

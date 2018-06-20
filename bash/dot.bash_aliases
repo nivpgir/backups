@@ -44,8 +44,12 @@ function calc(){
 }
 
 function rename_workspace(){
+    echo $1
+    newname=`echo $1`
+    echo $newname
     newname=`i3-msg -t get_workspaces |
                     jq  'map(select(.focused)) | .[] | .name' |
-                    sed -r -e "s/\"([0-9]:[0-9]:).*\"/\1$1/"`
+                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$1/"`
+    echo $newname
     i3-msg rename workspace to $newname
 }

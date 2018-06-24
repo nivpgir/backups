@@ -45,3 +45,11 @@ alias diff="diff --color"
 function calc(){
 		echo "$(( $@ ))"
 }
+
+function rename_workspace(){
+    newname=`echo $1`
+    newname=`i3-msg -t get_workspaces |
+                    jq  'map(select(.focused)) | .[] | .name' |
+                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$1/"`
+    i3-msg rename workspace to $newname
+}

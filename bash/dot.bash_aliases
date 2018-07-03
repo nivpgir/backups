@@ -57,3 +57,17 @@ function rename_workspace(){
                     sed -r -e "s/\"([0-9]).*\"/\1:\1:$newname/"`
     i3-msg rename workspace to $newname
 }
+
+function tohex() {
+    for n in $@; do
+        printf "%X" $n
+    done
+    echo
+}
+
+function todec() {
+    for n in $@; do
+        printf "%d " $n
+    done
+    echo
+}

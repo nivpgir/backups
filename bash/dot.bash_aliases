@@ -44,9 +44,16 @@ function calc(){
 }
 
 function rename_workspace(){
-    newname=`echo $1`
+    if [[ -z $1 ]]; then
+        newname=`zenity --entry \
+                        --title="new workspace name" \
+                        --text="Workspace name:" \
+                        --entry-text="IDK"`
+    else
+        newname=`echo $1`
+    fi
     newname=`i3-msg -t get_workspaces |
                     jq  'map(select(.focused)) | .[] | .name' |
-                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$1/"`
+                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$newname/"`
     i3-msg rename workspace to $newname
 }

@@ -42,18 +42,36 @@ function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
+function venv_name {
+		local venvname=${VIRTUAL_ENV##*/}
+		if [[ -z "$venvname" ]]; then
+				echo ""
+		else
+				echo "($venvname)"
+		fi
+}
+
 set_prompt(){
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'
     White='\[\e[01;37m\]'
-    Red='\[\e[01;31m\]'
+    BoldRed='\[\e[01;31m\]'
+    Red='\[\e[00;31m\]'
     Green='\[\e[01;32m\]'
-    Orcam1='\[\e[00;36m\]'
+		Yellow='\[\e[1;32m\]'
+		Orange='\[\e[38;5;202m\]'
+		Swamp='\[\e[38;5;58m\]'
+    LightSwamp='\[\e[38;5;106m\]'
+		Orcam1='\[\e[01;36m\]'
     Orcam2='\[\e[01;33m\]'
-    Reset='\[\033\e[0m\]'
+    Reset='\[\e[0m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
     NoColor='\[\e[0m\]'
+		OrangeBG='\[\e[48;5;202m\]'
+		SwampBG='\[\e[48;5;58m\]'
+		git_branch_bg=$Orange
+		py_venv_bg=$LightSwamp
 
 
     PS1=""
@@ -67,7 +85,9 @@ set_prompt(){
 	      PS1XTERM="${Red}X "
     fi
 
-    export PS1="${PS1}${White}"'[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]] $(parse_git_branch)\n\[\033[1;32m\]$ \[\033[00m\]'
+    # export PS1="${PS1}${White}"'[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]]$(parse_git_branch)$(venv_name)\n\[\033[1;32m\]$ \[\033[00m\]'
+
+		export PS1="${PS1}${White}""[\t] [$Red\u@\h$Reset] [$Orcam1\w$Reset]$git_branch_bg$(parse_git_branch)$Reset$py_venv_bg$(venv_name)$Reset\n$Yellow$ $Reset"
 
 }
 

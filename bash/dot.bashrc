@@ -115,5 +115,5 @@ export NVM_DIR="$HOME/.nvm"
 
 
 ### Python virtualenv ###
-export WORKON_HOME=~/Envs
+export WORKON_HOME=~/.py_venvs
 source ~/.local/bin/virtualenvwrapper.sh

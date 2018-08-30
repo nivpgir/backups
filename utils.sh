@@ -22,6 +22,19 @@ backup_if_exists(){
     # if file doesn't exist, we have nothing to do
 }
 
+prefix_basename(){
+    # if it's a hidden file, we need to prefix "dot" to it,
+    # cause that's how I keep dotfiles in the repo
+    local base=`basename $1`
+    # local dir=`dirname $1`
+    local prefixed=${base/./dot.}
+    if [ ! -z "$2" ]; then
+        eval $2="'$prefixed'"
+    else
+        echo $prefixed
+    fi
+}
+
 
 
 # this exists for educational purposes:
@@ -42,10 +55,10 @@ function myfunc()
 }
 
 # bar is passed as the variable name
-myfunc foo bar
+# myfunc foo bar
 # so bar is available and holds the value, foo
-echo $bar
+# echo $bar
 
 # no variable was given, foo is echoed
-result2=$(myfunc foo)
-echo $result2
+# result2=$(myfunc foo)
+# echo $result2

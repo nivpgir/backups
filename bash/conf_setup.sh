@@ -23,13 +23,15 @@ backup_if_exists(){
     # if file doesn't exist, we have nothing to do
 }
 
-prefixed_basename(){
+prefix_basename(){
     # if it's a hidden file, we need to prefix "dot" to it,
     # cause that's how I keep dotfiles in the repo
     local base=`basename $1`
     # local dir=`dirname $1`
     local prefixed=${base/./dot.}
     if [ ! -z "$2" ]; then
+        # this creates a variable named as the expanded value of $2
+        # which it's value will be the expanded value of $prefixed
         eval $2="'$prefixed'"
     else
         echo $prefixed
@@ -39,7 +41,6 @@ prefixed_basename(){
 backup_orig_and_link_new(){
     backup_if_exists $2
     ln -s $1 $2
-
 }
 
 # conf_files="$HOME/.bashrc $HOME/.bash_aliases"
@@ -51,6 +52,6 @@ for f in $conf_files; do
     # then we prefix with "dot" cause we don't keep the files hidden in the repo
     # and also take only the basename because the files should be here locally
     # and we'll take the realpath to them
-    prefixed_basename $f target
-    ln -s $(realpath $target) $f
+    prefix_basename $f target
+    ln -s $(realpath $target) $(realpath $f)
 done

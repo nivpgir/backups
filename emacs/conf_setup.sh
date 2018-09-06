@@ -4,7 +4,7 @@
 source ../utils.sh
 emacs_conf_dir=$(realpath $HOME/.emacs.d)
 emacs_prv_dir=$emacs_conf_dir/private
-layers="niv-layer newlisp"
+layers="niv-layer"
 for l in $layers; do
     full_layer_path=${emacs_prv_dir}/${l}
 

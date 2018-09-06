@@ -13,7 +13,7 @@ for l in $layers; do
     # this is easier bacause we know no layer is a hidden dir
     backup_if_exists ${full_layer_path}
 
-    echo "this: $full_layer_path will point to this: $(realpath ${l})"
+    # echo "this: $full_layer_path will point to this: $(realpath ${l})"
     ln -s $(realpath ${l}) ${full_layer_path}
 done
 
@@ -21,6 +21,6 @@ done
 dot_spacemacs=.spacemacs
 prefix_basename $HOME/$dot_spacemacs link_dot_spacemacs
 real_dot_spacemacs=$(realpath ${dot_spacemacs})
-echo "this: $link_dot_spacemacs will point to this: $real_dot_spacemacs"
+# echo "this: $link_dot_spacemacs will point to this: $real_dot_spacemacs"
 backup_if_exists ${real_dot_spacemacs}
 ln -s $(realpath ${real_dot_spacemacs}) ${link_dot_spacemacs}

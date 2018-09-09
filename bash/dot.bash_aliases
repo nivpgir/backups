@@ -16,8 +16,8 @@ alias d='dirs -v'
 
 alias mv='mv -i'
 
-EMACS_CLIENT="emacsclient -q -c -n -a ''"
-EMACS_TERM_CLIENT="emacsclient -q -c -t -a ''"
+EMACS_CLIENT="emacsclient26 -q -c -n -a ''"
+EMACS_TERM_CLIENT="emacsclient26 -q -c -t -a ''"
 alias em="$EMACS_TERM_CLIENT -t $@"
 alias emacs="$EMACS_CLIENT $@"
 

@@ -31,6 +31,7 @@
 
 (defconst newlisp-packages
   '(newlisp-mode
+    smartparens
     (swank-newlisp :location local))
   "The list of Lisp packages required by the newlisp layer.")
 
@@ -44,4 +45,6 @@
   (use-package swank-newlisp
     :defer t))
 
+(defun newlisp/post-init-smartparens ()
+  (add-hook 'newlisp-mode-hook 'smartparens-mode))
 ;;; packages.el ends here

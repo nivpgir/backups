@@ -31,7 +31,6 @@ if [ -d ~/.local/etc/bash_completion.d ]; then
     done
 fi
 
-EMACS_CLIENT="emacsclient -q -c -n -a ''"
 export EDITOR=$EMACS_TERM_CLIENT
 export VISUAL=$EMACS_CLIENT
 export BROWSER='chromium'

@@ -12,15 +12,16 @@ for l in $layers; do
     # backup the layer if it exists, then link it to the layer in here
     # this is easier bacause we know no layer is a hidden dir
     backup_if_exists ${full_layer_path}
-
-    # echo "this: $full_layer_path will point to this: $(realpath ${l})"
+    # echo $(realpath ${l})
+    # echo ${full_layer_path}
     ln -s $(realpath ${l}) ${full_layer_path}
 done
 
 # finally, backup and link .spacemacs:
 dot_spacemacs=.spacemacs
-prefix_basename $HOME/$dot_spacemacs link_dot_spacemacs
-real_dot_spacemacs=$(realpath ${dot_spacemacs})
-# echo "this: $link_dot_spacemacs will point to this: $real_dot_spacemacs"
+prefix_basename $dot_spacemacs target_spacemacs
+echo $target_spacemacs
+real_dot_spacemacs=$(realpath ${HOME}/${dot_spacemacs})
+echo $real_dot_spacemacs
 backup_if_exists ${real_dot_spacemacs}
-ln -s $(realpath ${real_dot_spacemacs}) ${link_dot_spacemacs}
+ln -s $(realpath ${target_spacemacs}) ${real_dot_spacemacs}

@@ -22,7 +22,7 @@ backup_if_exists(){
     # if file doesn't exist, we have nothing to do
 }
 
-# the working directory should have the same name as the diretory
+# the working directory should have the same name as the directory
 dir_local=$HOME/.config/$(basename $(pwd))
 dir_repo=$(realpath .)
 

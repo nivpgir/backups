@@ -39,17 +39,36 @@ alias gpull="git pull"
 alias gfetch="git fetch"
 alias ga="git add"
 
-alias diff="diff --color"
-
 # calcualations:
 function calc(){
 		echo "$(( $@ ))"
 }
 
 function rename_workspace(){
-    newname=`echo $1`
+    if [[ -z $1 ]]; then
+        newname=`zenity --entry \
+                        --title="new workspace name" \
+                        --text="Workspace name:" \
+                        --entry-text="IDK"`
+    else
+        newname=`echo $1`
+    fi
     newname=`i3-msg -t get_workspaces |
                     jq  'map(select(.focused)) | .[] | .name' |
-                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$1/"`
+                    sed -r -e "s/\"([0-9]).*\"/\1:\1:$newname/"`
     i3-msg rename workspace to $newname
+}
+
+function tohex() {
+    for n in $@; do
+        printf "%X" $n
+    done
+    echo
+}
+
+function todec() {
+    for n in $@; do
+        printf "%d " $n
+    done
+    echo
 }

@@ -16,9 +16,9 @@ alias d='dirs -v'
 
 alias mv='mv -i'
 
-EMACS_CLIENT="emacsclient26 -q -c -n -a ''"
-EMACS_TERM_CLIENT="emacsclient26 -q -c -t -a ''"
-alias em="$EMACS_TERM_CLIENT -t $@"
+EMACS_CLIENT="emacsclient -c -n -a ''"
+EMACS_TERM_CLIENT="emacsclient -c -t -a ''"
+alias em="$EMACS_TERM_CLIENT $@"
 alias emacs="$EMACS_CLIENT $@"
 
 # Add an "alert" alias for long running commands.  Use like so:

@@ -42,7 +42,7 @@ This function should only modify configuration layer settings."
      ;; php
      ;; erc
      ;; floobits
-     ;; common-lisp
+     common-lisp
      ;; (clojure :variables
      ;;          clojure-enable-fancify-symbols t)
 
@@ -60,9 +60,9 @@ This function should only modify configuration layer settings."
      ;; parinfer
      ;;hy
      ;;c++-rtags
-     ;;cscope
-     ;;shell
-     ;; emacs-lisp
+     cscope
+     shell
+     emacs-lisp
      git
      (org :variables
           org-src-fontify-natively t
@@ -72,12 +72,11 @@ This function should only modify configuration layer settings."
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip nil)
-     ;;emacs-lisp
      ;; pdf-tools
      ;;csv
      ;;markdown
      ;;asciidoc
-     ;;python
+     python
      ;;html
      ;; themes-megapack
      ;; ----------------------------------------------------------------
@@ -85,15 +84,14 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;;helm
-     ;; auto-completion
-     ;; better-defaults
-     ;;emacs-lisp
-     ;;niv-layer
-     ;; git
+     helm
+     auto-completion
+     better-defaults
+     niv-layer
+     git
      ;; markdown
      ;; neotree
-     ;; org
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -251,8 +249,9 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ;;(idea-darcula :location local)
-			 idea-darcula
+                         ;; (idea-darcula :location local)
+                         idea-darkula
+                         darcula
                          spacemacs-dark
                          spacemacs-light)
 
@@ -528,9 +527,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (yasnippet-snippets ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org symon string-inflection spaceline-all-the-icons spaceline powerline smeargle restart-emacs rainbow-delimiters popwin persp-mode password-generator paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-bullets org-brain open-junk-file move-text magit-svn magit-gitflow lorem-ipsum link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-rtags helm-purpose window-purpose imenu-list helm-gitignore request helm-git-grep helm-company helm-c-yasnippet google-translate google-c-style golden-ratio gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu highlight editorconfig dumb-jump doom-modeline eldoc-eval shrink-path all-the-icons memoize disaster define-word counsel-projectile counsel swiper ivy company-statistics company-rtags rtags company-c-headers company column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode which-key use-package pcre2el overseer org-plus-contrib neotree nameless macrostep hydra helm-xref helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag font-lock+ evil elisp-slime-nav dotenv-mode bind-map auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (idea-darkula-theme darcula-theme slime-company slime common-lisp-snippets yapfify xterm-color unfill shell-pop pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements mwim multi-term live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-cscope xcscope eshell-z eshell-prompt-extras esh-help cython-mode company-anaconda packed anaconda-mode pythonic yasnippet-snippets ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org symon string-inflection spaceline-all-the-icons spaceline powerline smeargle restart-emacs rainbow-delimiters popwin persp-mode password-generator paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-bullets org-brain open-junk-file move-text magit-svn magit-gitflow lorem-ipsum link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-rtags helm-purpose window-purpose imenu-list helm-gitignore request helm-git-grep helm-company helm-c-yasnippet google-translate google-c-style golden-ratio gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu highlight editorconfig dumb-jump doom-modeline eldoc-eval shrink-path all-the-icons memoize disaster define-word counsel-projectile counsel swiper ivy company-statistics company-rtags rtags company-c-headers company column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode which-key use-package pcre2el overseer org-plus-contrib neotree nameless macrostep hydra helm-xref helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag font-lock+ evil elisp-slime-nav dotenv-mode bind-map auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

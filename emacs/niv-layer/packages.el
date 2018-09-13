@@ -31,7 +31,7 @@
 
 (defconst niv-layer-packages
   '(
-    centered-cursor-mode
+    ;; centered-cursor-mode
     )
   "The list of Lisp packages required by the niv-layer layer.
 
@@ -62,10 +62,10 @@ Each entry is either:
 
 (defun niv-layer/init-centered-cursor-mode ()
 ;;    (global-centered-cursor-mode +1)
-  (and
-   (require 'centered-cursor-mode)
-   (global-centered-cursor-mode +1)
-   )
+  ;; (and
+  ;;  (require 'centered-cursor-mode)
+  ;;  (global-centered-cursor-mode +1)
+  ;;  )
   )
 
 ;;; packages.el ends here

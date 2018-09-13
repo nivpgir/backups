@@ -51,7 +51,7 @@ This function should only modify configuration layer settings."
      ;; major-modes
      (c-c++ :variables
             ;; c-c++-enable-clang-support t
-            c-c++-enable-rtags-support t
+            ;; c-c++-enable-rtags-support t
             ;; c-default-style "ellemtel"
             c-basic-offset 2
             c-auto-newline nil

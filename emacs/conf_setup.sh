@@ -17,11 +17,30 @@ for l in $layers; do
     ln -s $(realpath ${l}) ${full_layer_path}
 done
 
-# finally, backup and link .spacemacs:
-dot_spacemacs=.spacemacs
-prefix_basename $dot_spacemacs target_spacemacs
-echo $target_spacemacs
-real_dot_spacemacs=$(realpath ${HOME}/${dot_spacemacs})
-echo $real_dot_spacemacs
-backup_if_exists ${real_dot_spacemacs}
-ln -s $(realpath ${target_spacemacs}) ${real_dot_spacemacs}
+# finally, backup and link .spacemacs and .spacemacs.env:
+# dot_spacemacs=.spacemacs
+# prefix_basename $dot_spacemacs target_spacemacs
+# echo $target_spacemacs
+# real_dot_spacemacs=$(realpath ${HOME}/${dot_spacemacs})
+# echo $real_dot_spacemacs
+# backup_if_exists ${real_dot_spacemacs}
+# ln -s $(realpath ${target_spacemacs}) ${real_dot_spacemacs}
+
+# dot_spacemacs_env=.spacemacs.env
+# prefix_basename $dot_spacemacs_env target_spacemacs_env
+# echo $target_spacemacs_env
+# real_dot_spacemacs_env=$(realpath ${HOME}/${dot_spacemacs_env})
+# echo $real_dot_spacemacs_env
+# backup_if_exists ${real_dot_spacemacs_env}
+# ln -s $(realpath ${target_spacemacs_env}) ${real_dot_spacemacs_env}
+
+function restore_prefixed_file(){
+    backup_file=$1
+    restore_dir=$2
+    prefix_basename $backup_file prefixed_backup_file
+    backup_if_exists $restore_dir/$backup_file
+    ln -s $prefixed_backup_file $restore_dir/$backup_file
+}
+
+restore_prefixed_file .spacemacs $HOME
+restore_prefixed_file .spacemacs.env $HOME

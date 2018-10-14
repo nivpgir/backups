@@ -35,7 +35,6 @@ export EDITOR=$EMACS_TERM_CLIENT
 export VISUAL=$EMACS_TERM_CLIENT
 export BROWSER='chromium'
 
-source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
 
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'

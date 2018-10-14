@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp -*-
+;; -*- mode: emacs-lisp; lexical-binding: t -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
@@ -42,16 +42,18 @@ This function should only modify configuration layer settings."
 
 		 ;; Navigation:
 		 ;; neotree
+     spacemacs-navigation
+
+     ;; Editing:
 		 spacemacs-editing
 
 
      ;; Languages:
 		 javascript
-		 ;; common-lisp
+		 common-lisp
 		 (c-c++ :variables
             c-c++-enable-clang-support t
             )
-		 newlisp
      scheme
      emacs-lisp
      ruby
@@ -61,6 +63,7 @@ This function should only modify configuration layer settings."
              python-guess-indent nil
              indent-tabs-mode t
              python-indent-offset 4)
+		 ;; hy
 		 (hy :variables
 				 hy-shell-interpreter-args "--spy --repl-output-fn=hy.contrib.hy-repr.hy-repr")
 
@@ -106,18 +109,14 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(
-																			(ferret-mode :location local)
-																			)
+   dotspacemacs-additional-packages '()
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(
-                                    wolfram-mode
-                                    google-c-style
-                                    )
+   dotspacemacs-excluded-packages '()
+
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
@@ -199,25 +198,9 @@ It should only modify the values of Spacemacs settings."
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
    dotspacemacs-editing-style 'emacs
-   ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
+
+   ;; If non-nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
-
-   ;; If non-nil then Spacemacs will import your PATH and environment variables
-   ;; from your default shell on startup. This is enabled by default for macOS
-   ;; users and X11 users.
-   dotspacemacs-import-env-vars-from-shell (and (display-graphic-p)
-                                                (or (eq system-type 'darwin)
-                                                    (eq system-type 'gnu/linux)
-                                                    (eq window-system 'x)))
-
-   ;; If nil then use the default shell is used to fetch the environment
-   ;; variables. Set this variable to a different shell executable path to
-   ;; import the environment variables from this shell. Note that
-   ;; `file-shell-name' is preserved and always points to the default shell. For
-   ;; instance to use your fish shell environment variables set this variable to
-   ;; `/usr/local/bin/fish'.
-   ;; (default nil)
-   dotspacemacs-import-env-vars-shell-file-name nil
 
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
@@ -256,11 +239,11 @@ It should only modify the values of Spacemacs settings."
                          spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
-   ;; `all-the-icons', `custom', `vim-powerline' and `vanilla'. The first three
-   ;; are spaceline themes. `vanilla' is default Emacs mode-line. `custom' is a
-   ;; user defined themes, refer to the DOCUMENTATION.org for more info on how
-   ;; to create your own spaceline theme. Value can be a symbol or list with\
-   ;; additional properties.
+   ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
+   ;; first three are spaceline themes. `doom' is the doom-emacs mode-line.
+   ;; `vanilla' is default Emacs mode-line. `custom' is a user defined themes,
+   ;; refer to the DOCUMENTATION.org for more info on how to create your own
+   ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
@@ -334,9 +317,9 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
 
-   ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
-   ;; `p' several times cycles through the elements in the `kill-ring'.
-   ;; (default nil)
+   ;; If non-nil, the paste transient-state is enabled. While enabled, after you
+   ;; paste something, pressing `C-j' and `C-k' several times cycles through the
+   ;; elements in the `kill-ring'. (default nil)
    dotspacemacs-enable-paste-transient-state nil
 
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
@@ -492,6 +475,14 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
 
+(defun dotspacemacs/user-env ()
+  "Environment variables setup.
+This function defines the environment variables for your Emacs session. By
+default it calls `spacemacs/load-spacemacs-env' which loads the environment
+variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
+See the header of this file for more information."
+  (spacemacs/load-spacemacs-env))
+
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
@@ -502,9 +493,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
-This function is called while dumping Spacemacs configuration. You can
-`require' or `load' the libraries of your choice that will be included
-in the dump."
+This function is called only while dumping Spacemacs configuration. You can
+`require' or `load' the libraries of your choice that will be included in the
+dump."
   )
 
 (defun dotspacemacs/user-config ()
@@ -514,7 +505,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  (setq inferior-lisp-program "ros -L ecl run")
+  (setq inferior-lisp-program "/usr/bin/clisp")
 	(setq winum-scope 'frame-local)
 
   )
@@ -552,12 +543,11 @@ This function is called at the very end of Spacemacs initialization."
    ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
  '(package-selected-packages
    (quote
-    (unfill mwim zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme \(idea-darcula\ :location\ local\)-theme centered-cursor-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks yapfify wolfram-mode web-mode thrift tagedit stan-mode smeargle slime-company slime slim-mode scss-mode scad-mode sass-mode qml-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements pdf-tools tablist orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mmm-mode matlab-mode markdown-toc markdown-mode magit-gitflow live-py-mode less-css-mode julia-mode hy-mode htmlize helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip flycheck floobits evil-magit magit magit-popup git-commit with-editor emmet-mode disaster cython-mode csv-mode company-web web-completion-data company-statistics company-quickhelp pos-tip company-c-headers company-anaconda company common-lisp-snippets cmake-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg clang-format cider-eval-sexp-fu cider seq queue clojure-mode auto-yasnippet yasnippet auto-dictionary arduino-mode anaconda-mode pythonic adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (ob-hy zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme \(idea-darcula\ :location\ local\)-theme centered-cursor-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode erc-yt erc-view-log erc-social-graph erc-image erc-hl-nicks yapfify wolfram-mode web-mode thrift tagedit stan-mode smeargle slime-company slime slim-mode scss-mode scad-mode sass-mode qml-mode pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements pdf-tools tablist orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mmm-mode matlab-mode markdown-toc markdown-mode magit-gitflow live-py-mode less-css-mode julia-mode hy-mode htmlize helm-pydoc helm-gitignore helm-css-scss helm-company helm-c-yasnippet haml-mode gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip flycheck floobits evil-magit magit magit-popup git-commit with-editor emmet-mode disaster cython-mode csv-mode company-web web-completion-data company-statistics company-quickhelp pos-tip company-c-headers company-anaconda company common-lisp-snippets cmake-mode clojure-snippets clj-refactor inflections edn multiple-cursors paredit peg clang-format cider-eval-sexp-fu cider seq queue clojure-mode auto-yasnippet yasnippet auto-dictionary arduino-mode anaconda-mode pythonic adoc-mode markup-faces ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-search-highlight-persist-highlight-face ((t (:inherit lazy-highlight :background "black"))))
- '(show-paren-match ((t (:background "dark slate gray")))))
+ '(evil-search-highlight-persist-highlight-face ((t (:inherit lazy-highlight :background "black")))))
 )

@@ -35,11 +35,14 @@ done
 # ln -s $(realpath ${target_spacemacs_env}) ${real_dot_spacemacs_env}
 
 function restore_prefixed_file(){
-    backup_file=$1
-    restore_dir=$2
-    prefix_basename $backup_file prefixed_backup_file
-    backup_if_exists $restore_dir/$backup_file
-    ln -s $prefixed_backup_file $restore_dir/$backup_file
+    filename=$1     # non prefixed filename
+    restore_dir=$(realpath $2)  # dir where the link should be created
+    prefix_basename $filename prefixed_source_file # the actual file, prefixed with dot.
+    backup_if_exists $restore_dir/$filename # this is where the conf file should be
+    echo $(realpath $prefixed_source_file)
+    echo $(realpath $restore_dir)
+    echo $filename
+    ln -s -T $(realpath $prefixed_source_file) $(realpath $restore_dir)/$filename
 }
 
 restore_prefixed_file .spacemacs $HOME

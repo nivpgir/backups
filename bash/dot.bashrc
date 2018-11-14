@@ -127,3 +127,15 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Set usefule variables for the env
 export tcdir=$HOME/local/toolchains
 export brdir=$HOME/local/buildroots
+
+function maybe_add_ssh_key(){
+    ssh-add -l | grep -q `ssh-keygen -lf $1  | awk '{print $2}'` || ssh-add $1
+}
+
+(pgrep ssh-agent > /dev/null && [[ $? == 1 ]] && eval `ssh-agent` && \
+     echo ssh-agent started successfully ) || \
+    ( pgrep ssh-agent > /dev/null && [[ $? == 0 ]] && echo ssh-agent already running ) || \
+    echo ssh-agent failed to start
+maybe_add_ssh_key /orcam/env/scripts/baseunit_ssh_key/id_rsa
+maybe_add_ssh_key ~/.ssh/id_bitbucket_rsa
+

@@ -32,7 +32,7 @@ if [ -d ~/.local/etc/bash_completion.d ]; then
 fi
 
 export EDITOR=$EMACS_TERM_CLIENT
-export VISUAL=$EMACS_CLIENT
+export VISUAL=$EMACS_TERM_CLIENT
 export BROWSER='chromium'
 
 source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
@@ -40,6 +40,18 @@ source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to ove
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
+
+if [ "$PS1" ]; then
+    # If this is an xterm set the title to user@host:dir
+    case $TERM in
+        xterm*|rxvt*)
+            PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
+            ;;
+        *)
+            ;;
+    esac
+fi
+
 
 set_prompt(){
     Last_Command=$? # Must come first!
@@ -79,6 +91,11 @@ shopt -s histappend
 HISTSIZE=1000000
 HISTFILESIZE=2000000
 HISTFILE=/home/$USER/.histfile
+if [ "$PS1" ]; then
+    # don't put duplicate lines in the history. See bash(1) for more options
+    export HISTCONTROL=ignoredups
+fi
+
 
 
 # check the window size after each command and, if necessary,
@@ -88,6 +105,8 @@ shopt -s checkwinsize
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
+
+shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"

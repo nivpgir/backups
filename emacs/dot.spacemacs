@@ -34,6 +34,8 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     markdown
+     ruby
      ;;javascript
      ;;ruby
      ;;graphviz
@@ -58,7 +60,7 @@ This function should only modify configuration layer settings."
             )
      ;;newlisp
      ;; parinfer
-     ;;hy
+     ;; hy
      ;;c++-rtags
      cscope
      shell
@@ -76,7 +78,10 @@ This function should only modify configuration layer settings."
      ;;csv
      ;;markdown
      ;;asciidoc
-     python
+     (python :variables
+             python-shell-interpreter "/usr/bin/python3"
+             python-shell-interpreter-args "-i"
+             )
      ;;html
      ;; themes-megapack
      ;; ----------------------------------------------------------------
@@ -532,7 +537,7 @@ This function is called at the very end of Spacemacs initialization."
  '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (idea-darkula-theme darcula-theme slime-company slime common-lisp-snippets yapfify xterm-color unfill shell-pop pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements mwim multi-term live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-cscope xcscope eshell-z eshell-prompt-extras esh-help cython-mode company-anaconda packed anaconda-mode pythonic yasnippet-snippets ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org symon string-inflection spaceline-all-the-icons spaceline powerline smeargle restart-emacs rainbow-delimiters popwin persp-mode password-generator paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-bullets org-brain open-junk-file move-text magit-svn magit-gitflow lorem-ipsum link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-rtags helm-purpose window-purpose imenu-list helm-gitignore request helm-git-grep helm-company helm-c-yasnippet google-translate google-c-style golden-ratio gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu highlight editorconfig dumb-jump doom-modeline eldoc-eval shrink-path all-the-icons memoize disaster define-word counsel-projectile counsel swiper ivy company-statistics company-rtags rtags company-c-headers company column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode which-key use-package pcre2el overseer org-plus-contrib neotree nameless macrostep hydra helm-xref helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag font-lock+ evil elisp-slime-nav dotenv-mode bind-map auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (mmm-mode markdown-toc markdown-mode gh-md emoji-cheat-sheet-plus company-emoji ob-hy hy-mode dash-functional idea-darkula-theme darcula-theme slime-company slime common-lisp-snippets yapfify xterm-color unfill shell-pop pyvenv pytest pyenv-mode py-isort pippel pipenv pip-requirements mwim multi-term live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-cscope xcscope eshell-z eshell-prompt-extras esh-help cython-mode company-anaconda packed anaconda-mode pythonic yasnippet-snippets ws-butler winum volatile-highlights vi-tilde-fringe uuidgen toc-org symon string-inflection spaceline-all-the-icons spaceline powerline smeargle restart-emacs rainbow-delimiters popwin persp-mode password-generator paradox spinner orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-bullets org-brain open-junk-file move-text magit-svn magit-gitflow lorem-ipsum link-hint indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-rtags helm-purpose window-purpose imenu-list helm-gitignore request helm-git-grep helm-company helm-c-yasnippet google-translate google-c-style golden-ratio gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit magit magit-popup git-commit with-editor evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu highlight editorconfig dumb-jump doom-modeline eldoc-eval shrink-path all-the-icons memoize disaster define-word counsel-projectile counsel swiper ivy company-statistics company-rtags rtags company-c-headers company column-enforce-mode clean-aindent-mode clang-format centered-cursor-mode which-key use-package pcre2el overseer org-plus-contrib neotree nameless macrostep hydra helm-xref helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag font-lock+ evil elisp-slime-nav dotenv-mode bind-map auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

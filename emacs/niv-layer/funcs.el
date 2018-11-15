@@ -23,3 +23,19 @@ point reaches the beginning or end of the buffer, stop there."
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
 
+
+
+(defun niv-layer/c-copy-proto-to-header-file ()
+  (interactive)
+  (save-excursion
+    ;; c-mode's `beginning-of-defun' should be robust enough.
+    (beginning-of-defun)
+    (let ((l (point)))
+      (search-forward-regexp " *{")
+      (let ((proto (buffer-substring l (match-beginning 0))))
+        (ff-find-other-file)
+        ;; If other file is already open, we don't want to move point.
+        (save-excursion
+          (goto-char (point-max))
+          ;; Do some more movement here if you want.
+          (insert "\n" proto ";"))))))

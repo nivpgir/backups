@@ -24,7 +24,6 @@ point reaches the beginning or end of the buffer, stop there."
       (move-beginning-of-line 1))))
 
 
-
 (defun niv-layer/c-copy-proto-to-header-file ()
   (interactive)
   (save-excursion

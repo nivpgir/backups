@@ -30,9 +30,7 @@
 ;;; Code:
 
 (defconst niv-layer-packages
-  '(
-    centered-cursor-mode
-    )
+  '( )
   "The list of Lisp packages required by the niv-layer layer.
 
 Each entry is either:
@@ -61,11 +59,7 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 (defun niv-layer/init-centered-cursor-mode ()
-;;    (global-centered-cursor-mode +1)
-  (and
-   (require 'centered-cursor-mode)
-   (global-centered-cursor-mode +1)
-   )
+  ;;    (global-centered-cursor-mode +1)
   )
 
 ;;; packages.el ends here

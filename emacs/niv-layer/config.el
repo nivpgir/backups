@@ -27,11 +27,8 @@
 ;; make backups in a specified backups directory instead of the same directory of the file
 (setq make-backup-files t)
 (setq backup-directory-alist '((".*" . "~/.emacs-backup")))
-
-
 ;; the background of the expression highlighting with show paren mode
 ;; is really ugly with the idea-darkula mode so we change it here
 (custom-theme-set-faces
  'idea-darkula
  '(show-paren-match ((t (:background "dark slate gray")))))
-

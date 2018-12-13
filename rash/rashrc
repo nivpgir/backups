@@ -1,0 +1,31 @@
+
+(require racket/string)
+(define-simple-pipeline-alias ls 'ls '-CFh '--color=auto)
+(define-simple-pipeline-alias la ls '-a)
+(define-simple-pipeline-alias ll ls '-l)
+(define-simple-pipeline-alias lla ll '-a)
+
+(define-simple-pipeline-alias grep 'grep '--color=auto)
+(define-simple-pipeline-alias fgrep 'fgrep '--color=auto)
+(define-simple-pipeline-alias egrep 'egrep '--color=auto)
+
+(define-simple-pipeline-alias mv 'mv '-i)
+
+;; (require )
+;; (define EMACS_CLIENT '(emacsclient -c -n -a ""))
+(putenv "EMACS_CLIENT" "emacsclient -c -n -a \"\"")
+;; (define EMACS_TERM_CLIENT '(emacsclient -c -t -a ""))
+(putenv "EMACS_TERM_CLIENT" "emacsclient -c -t -a \"\"")
+
+(map string->symbol (string-split (getenv "EMACS_TERM_CLIENT")))
+(map string->symbol (string-split (getenv "EMACS_CLIENT")))
+;; (define-simple-pipeline-alias em 'emacsclient '-c '-n '-a '"")
+(define-simple-pipeline-alias em
+  (map string->symbol (string-split (getenv "EMACS_TERM_CLIENT"))))
+(define-simple-pipeline-alias emacs
+  (map string->symbol (string-split (getenv "EMACS_CLIENT"))))
+
+(define-simple-pipeline-alias gc 'git 'commit)
+(define-simple-pipeline-alias gs 'git 'status)
+(define-simple-pipeline-alias gd 'git 'diff)
+(define-simple-pipeline-alias ga 'git 'add)

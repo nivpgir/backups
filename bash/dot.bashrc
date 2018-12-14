@@ -98,8 +98,8 @@ shopt -s histappend
 HISTSIZE=1000000
 HISTFILESIZE=2000000
 HISTFILE=/home/$USER/.histfile
-
-
+export HISTCONTROL=ignoredups
+shopt -s checkwinsize
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize

@@ -5,7 +5,8 @@
 
 
 
-(require racket/string)
+(require racket/string
+         (only-in racket curryr))
 ;; ls's
 (define-simple-pipeline-alias ls 'ls '-CFh '--color=auto)
 (define-simple-pipeline-alias la ls '-a)
@@ -22,9 +23,9 @@
 
 ;; emacs
 (define-simple-pipeline-alias em
-  (map string->symbol (string-split (getenv "EMACS_TERM_CLIENT"))))
+  (map (curryr string-trim "\"\"") (string-split (getenv "EMACS_TERM_CLIENT"))))
 (define-simple-pipeline-alias emacs
-  (map string->symbol (string-split (getenv "EMACS_CLIENT"))))
+  (map (curryr string-trim "\"\"") (string-split (getenv "EMACS_CLIENT"))))
 
 ;; git
 (define-simple-pipeline-alias gc 'git 'commit)

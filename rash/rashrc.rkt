@@ -173,9 +173,9 @@
 
 (define (rename-workspace new-name)
   (let* ([i3-json (string->jsexpr #{i3-msg -t get_workspaces})]
-         [cur-ws (first (filter (λ (j) (hash-ref j 'focused)) i3-json))]
+         [cur-ws (first (filter (lambda (j) (hash-ref j 'focused)) i3-json))]
          [num-cur-ws (hash-ref cur-ws 'num)]
-         [old-name (hash-ref cur-ws 'name)]
-         )
-    {i3-msg rename workspace to (string-replace old-name new-name)}))
+         [old-name (hash-ref cur-ws 'name)])
+    {i3-msg rename workspace to (string-append num-cur-ws ":" num-cur-ws ":" new-name)}))
+
 

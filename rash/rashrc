@@ -1,4 +1,14 @@
 
 
+(if (putenv "EMACS_CLIENT" "emacsclient -c -n -a \'\'") (void)
+    (displayln "Failed to set envarg \"EMACS_CLIENT\""))
+(if (putenv "EMACS_TERM_CLIENT" "emacsclient -c -t -a \'\'") (void)
+    (displayln "Failed to set envarg \"EMACS_TERM_CLIENT\""))
+(if (putenv "BROWSER" "chromium") (void)
+    (displayln "Failed to set envarg \"BROWSER\""))
+
 (require-if-file-exists "rash-aliases.rkt")
 
+(if (find-executable-path "dircolors")
+    #{dircolors -b ~/.dircolors}
+    (print "bye"))

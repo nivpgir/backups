@@ -12,3 +12,13 @@
 (if (find-executable-path "dircolors")
     #{dircolors -b ~/.dircolors}
     (print "bye"))
+
+
+;; annoying things with rash:
+;; - no history
+;; - no pushd
+;; - running rash scripts take too long to boot
+;; - running rash scripts doesn't require "rashrc.rkt" nor runs rashrc
+;;
+;; Questions:
+;; how to I pipe the return value from a racket function back to a unix pipe

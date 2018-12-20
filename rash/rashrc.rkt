@@ -8,13 +8,15 @@
  shell/utils/bourne-expansion-utils
  json
  racket/string
+ (only-in racket curry curryr)
  (for-syntax racket/syntax
              syntax/parse
              racket/base
              ))
 
 (provide (all-defined-out)
-         (only-in racket curry curryr)
+         curry
+         curryr
          (all-from-out racket/list
                        racket/file
                        racket/format

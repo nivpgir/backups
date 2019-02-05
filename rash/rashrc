@@ -9,6 +9,6 @@
 
 (require-if-file-exists "rash-aliases.rkt")
 
-(if (find-executable-path "dircolors")
-    #{dircolors -b ~/.dircolors}
-    (print "bye"))
+;; (if (find-executable-path "dircolors")
+;;     #{dircolors -b ~/.dircolors}
+;;     (print "bye"))

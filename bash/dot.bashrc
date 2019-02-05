@@ -11,6 +11,9 @@
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+if [ -f ~/.work_aliases ]; then
+    . ~/.work_aliases
+fi
 
 ### Completioning ###
 # enable programmable completion features (you don't need to enable
@@ -139,6 +142,8 @@ function maybe_add_ssh_key(){
         ssh-add $1
     fi
 }
+
+
 
 # source ~/.local/bin/ssh-find-agent.sh
 # set_ssh_agent_socket

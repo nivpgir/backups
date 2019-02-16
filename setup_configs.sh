@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # every directory should have a conf_setup.sh script inside it that links
 # all the relevant config files to the correct places, all this script
 # needs to do is iterate over all the directories that need to be setup

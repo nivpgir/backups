@@ -73,3 +73,6 @@ function todec() {
     done
     echo
 }
+
+# Lists folders and files sizes in the current folder
+alias ducks='du -cksh * | sort -rh | head -11'

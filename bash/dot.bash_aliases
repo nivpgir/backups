@@ -73,4 +73,4 @@ function todec() {
 }
 
 # Lists folders and files sizes in the current folder
-alias ducks='du -cksh * | sort -rn|head -11'
+alias ducks='du -cksh * | sort -rh | head -11'

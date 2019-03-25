@@ -32,7 +32,7 @@
 (defconst niv-layer-packages
   '(
     ;; centered-cursor-mode
-    (carp-mode :location local)
+    ;; (carp-mode :location local)
     )
   "The list of Lisp packages required by the niv-layer layer.
 

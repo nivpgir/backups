@@ -119,7 +119,8 @@ point reaches the beginning or end of the buffer, stop there."
 (straight-use-package 'idea-darkula-theme)
 (load-theme 'idea-darkula)
 
-;; ;; Company
+;; Company
+;; remember that navigating in the popup is done with M-n and M-p
 (straight-use-package 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -178,9 +179,17 @@ point reaches the beginning or end of the buffer, stop there."
 ;;; Languages:
 ;; haskell
 (straight-use-package 'haskell-mode)
+(straight-use-package 'company-ghc)
+(if (bound-and-true-p company-candidates)
+    (add-to-list 'company-backends 'company-ghc))
+
 ;; ruby
 ;; c-c++
 ;; python
 ;; scala
+;; also maybe:
+;; elixir
+;; nim
+;; java
 
 ;; get something as emacs help (helpful or something)

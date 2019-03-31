@@ -72,7 +72,6 @@ point reaches the beginning or end of the buffer, stop there."
 (straight-use-package 'smartparens)
 (require 'smartparens-config)
 (smartparens-global-mode)
-;; comment with C-/ ;; TODO: missing
 ;; centered point ;; if this will be problematic then consider using: https://www.emacswiki.org/emacs/centered-cursor-mode.el
 ;;(straight-use-package
 ;; '(centered-point-mode :type git :host github :repo "jmercouris/emacs-centered-point"))
@@ -95,9 +94,27 @@ point reaches the beginning or end of the buffer, stop there."
 (straight-use-package 'undo-tree)
 (global-undo-tree-mode)
 (setq undo-tree-visualizer-diff t)
-
-
-
+;; comment with C-/
+(global-unset-key (kbd "C-/"))
+(global-unset-key (kbd "C-x C-;"))
+(global-set-key (kbd "C-/") 'comment-line)
+(define-key undo-tree-map (kbd "C-/") nil)
+(setq winum-keymap
+      (let ((map (make-sparse-keymap)))
+	(define-key map (kbd "C-`") 'winum-select-window-by-number)
+	(define-key map (kbd "M-0") 'winum-select-window-0-or-10)
+	(define-key map (kbd "M-1") 'winum-select-window-1)
+	(define-key map (kbd "M-2") 'winum-select-window-2)
+	(define-key map (kbd "M-3") 'winum-select-window-3)
+	(define-key map (kbd "M-4") 'winum-select-window-4)
+	(define-key map (kbd "M-5") 'winum-select-window-5)
+	(define-key map (kbd "M-6") 'winum-select-window-6)
+	(define-key map (kbd "M-7") 'winum-select-window-7)
+	(define-key map (kbd "M-8") 'winum-select-window-8)
+	(define-key map (kbd "M-9") 'winum-select-window-9)
+	map))
+(straight-use-package 'winum)
+(winum-mode)
 ;; darcula theme
 (straight-use-package 'idea-darkula-theme)
 (load-theme 'idea-darkula)
@@ -166,3 +183,4 @@ point reaches the beginning or end of the buffer, stop there."
 ;; python
 ;; scala
 
+;; get something as emacs help (helpful or something)

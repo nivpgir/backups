@@ -13,6 +13,9 @@
 
 
 ;; My Functions and configs
+(defun compose (f g)
+  `(lambda (x) (,f (,g x))))
+
 (defun prelude-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
@@ -35,6 +38,16 @@ point reaches the beginning or end of the buffer, stop there."
     (back-to-indentation)
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank)
+)
+(global-set-key (kbd "C-c d") 'duplicate-line)
 (global-set-key (kbd "C-a") 'prelude-move-beginning-of-line)
 ;;unbinding C-m from RET
 (define-key input-decode-map [?\C-m] [C-m])
@@ -42,8 +55,6 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 ;;enable line numbers always
 (global-linum-mode t)
-;;setup the nyan-mode
-;; (case window-system ((x w32) (nyan-mode)))
 ;;activate volatile highlights
 ;; (volatile-highlights-mode t)
 ;;make backup files only in "~/.saves":
@@ -53,10 +64,38 @@ point reaches the beginning or end of the buffer, stop there."
 (setq gdb-many-windows t)
 ;;; Non-nil means display source file containing the main routine at startup
 (setq gdb-show-main t)
-
 ;; first things first...
 ;; delete selection mode
 (delete-selection-mode t)
+;; match parens ;; TODO: missing show full expression and change highlight color
+(show-paren-mode t)
+(straight-use-package 'smartparens)
+(require 'smartparens-config)
+(smartparens-global-mode)
+;; comment with C-/ ;; TODO: missing
+;; centered point ;; if this will be problematic then consider using: https://www.emacswiki.org/emacs/centered-cursor-mode.el
+;;(straight-use-package
+;; '(centered-point-mode :type git :host github :repo "jmercouris/emacs-centered-point"))
+;;(require 'centered-point-mode-autoloads)
+;;(require 'centered-point-mode)
+(defun line-change ()
+  (recenter)
+  )
+(define-minor-mode centered-point-mode
+  "Alaways center the cursor in the middle of the screen."
+  :lighter "..."
+  (cond (centered-point-mode (add-hook 'post-command-hook 'line-change))
+	(t (remove-hook 'post-command-hook 'line-change)))
+  )
+(centered-point-mode t)
+;; expand region with C-:
+(straight-use-package 'expand-region)
+(global-set-key (kbd "C-;") 'er/expand-region)
+;; undo-tree with diff on visualizing
+(straight-use-package 'undo-tree)
+(global-undo-tree-mode)
+(setq undo-tree-visualizer-diff t)
+
 
 
 ;; darcula theme
@@ -104,7 +143,8 @@ point reaches the beginning or end of the buffer, stop there."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("02591317120fb1d02f8eb4ad48831823a7926113fa9ecfb5a59742420de206e0" default))))
+    ("02591317120fb1d02f8eb4ad48831823a7926113fa9ecfb5a59742420de206e0" default)))
+ '(inhibit-startup-screen t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -114,4 +154,15 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; magit
 (straight-use-package 'magit)
+;;(straight-use-package 'magithub)
+
+
+
+;;; Languages:
+;; haskell
+(straight-use-package 'haskell-mode)
+;; ruby
+;; c-c++
+;; python
+;; scala
 

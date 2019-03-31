@@ -19,8 +19,9 @@ alias mv='mv -i'
 
 EMACS_CLIENT="emacsclient -q -c -n -a ''"
 EMACS_TERM_CLIENT="emacsclient -q -c -t -a ''"
-alias em="$EMACS_TERM_CLIENT -t $@"
-alias emacs="$EMACS_CLIENT $@"
+# alias em="$EMACS_TERM_CLIENT -t $@"
+alias em="emacs --no-window-system $@"
+alias emacs="emacs $@"
 
 # Add an "alert" alias for long running commands.  Use like so:
 # e.g  sleep 10; alert

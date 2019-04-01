@@ -154,6 +154,8 @@ current window."
 (straight-use-package 'helm)
 (require 'helm)
 (require 'helm-config)
+(setq helm-split-window-inside-p t)
+(setq helm-always-two-windows nil)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
 (defun pl/helm-alive-p ()

@@ -13,6 +13,8 @@
 
 
 ;; My Functions and configs
+(define-prefix-command 'my-keymap)
+(global-set-key (kbd "M-m") 'my-keymap)
 (defun compose (f g)
   `(lambda (x) (,f (,g x))))
 
@@ -38,6 +40,7 @@ point reaches the beginning or end of the buffer, stop there."
     (back-to-indentation)
     (when (= orig-point (point))
       (move-beginning-of-line 1))))
+(global-set-key (kbd "C-a") 'prelude-move-beginning-of-line)
 (defun duplicate-line()
   (interactive)
   (move-beginning-of-line 1)
@@ -46,9 +49,27 @@ point reaches the beginning or end of the buffer, stop there."
   (open-line 1)
   (next-line 1)
   (yank)
-)
+  )
 (global-set-key (kbd "C-c d") 'duplicate-line)
-(global-set-key (kbd "C-a") 'prelude-move-beginning-of-line)
+(defun alternate-buffer (&optional window)
+  "Switch back and forth between current and last buffer in the
+current window."
+  (interactive)
+  (let ((current-buffer (window-buffer window))
+        (buffer-predicate
+         (frame-parameter (window-frame window) 'buffer-predicate)))
+    ;; switch to first buffer previously shown in this window that matches
+    ;; frame-parameter `buffer-predicate'
+    (switch-to-buffer
+     (or (cl-find-if (lambda (buffer)
+                       (and (not (eq buffer current-buffer))
+                            (or (null buffer-predicate)
+                                (funcall buffer-predicate buffer))))
+                     (mapcar #'car (window-prev-buffers window)))
+         ;; `other-buffer' honors `buffer-predicate' so no need to filter
+         (other-buffer current-buffer t)))))
+(global-set-key (kbd "M-m <tab>") 'alternate-buffer)
+
 ;;unbinding C-m from RET
 (define-key input-decode-map [?\C-m] [C-m])
 ;;use ibuffer instead of list-buffers
@@ -69,6 +90,7 @@ point reaches the beginning or end of the buffer, stop there."
 (delete-selection-mode t)
 ;; match parens ;; TODO: missing show full expression and change highlight color
 (show-paren-mode t)
+(setq show-paren-style 'expression)
 (straight-use-package 'smartparens)
 (require 'smartparens-config)
 (smartparens-global-mode)
@@ -118,6 +140,10 @@ point reaches the beginning or end of the buffer, stop there."
 ;; darcula theme
 (straight-use-package 'idea-darkula-theme)
 (load-theme 'idea-darkula)
+(custom-theme-set-faces
+ 'idea-darkula
+ '(show-paren-match ((t (:background "dark slate gray")))))
+
 
 ;; Company
 ;; remember that navigating in the popup is done with M-n and M-p

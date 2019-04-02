@@ -1,3 +1,5 @@
+;;; init.el --- Initialization file for Emacs
+;;; Commentary: Emacs Startup File --- initialization for Emacs
 (defvar bootstrap-version)
 (let ((bootstrap-file (concat user-emacs-directory "straight/bootstrap.el"))
       (bootstrap-version 2))
@@ -13,7 +15,7 @@
 
 
 ;; My Functions and configs
-(define-prefix-command 'my-keymap)
+(define-prefix-command 'my-keymap nil "niv")
 (global-set-key (kbd "M-m") 'my-keymap)
 (defun compose (f g)
   `(lambda (x) (,f (,g x))))
@@ -47,7 +49,7 @@ point reaches the beginning or end of the buffer, stop there."
   (kill-line)
   (yank)
   (open-line 1)
-  (next-line 1)
+  (forward-line 1)
   (yank)
   )
 (global-set-key (kbd "C-c d") 'duplicate-line)
@@ -81,9 +83,9 @@ current window."
 ;;make backup files only in "~/.saves":
 (setq backup-directory-alist `(("." . "~/.saves")))
 ;;settings for gdb:
-;;; use gdb-many-windows by default
+;; use gdb-many-windows by default
 (setq gdb-many-windows t)
-;;; Non-nil means display source file containing the main routine at startup
+;; Non-nil means display source file containing the main routine at startup
 (setq gdb-show-main t)
 ;; first things first...
 ;; delete selection mode
@@ -109,6 +111,10 @@ current window."
 	(t (remove-hook 'post-command-hook 'line-change)))
   )
 (centered-point-mode t)
+(straight-use-package 'smart-newline)
+(smart-newline-mode t)
+
+
 ;; expand region with C-:
 (straight-use-package 'expand-region)
 (global-set-key (kbd "C-;") 'er/expand-region)
@@ -139,7 +145,7 @@ current window."
 (winum-mode)
 ;; darcula theme
 (straight-use-package 'idea-darkula-theme)
-(load-theme 'idea-darkula)
+(load-theme 'idea-darkula t)
 (custom-theme-set-faces
  'idea-darkula
  '(show-paren-match ((t (:background "dark slate gray")))))
@@ -158,9 +164,6 @@ current window."
 (setq helm-always-two-windows nil)
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-(defun pl/helm-alive-p ()
-  (if (boundp 'helm-alive-p)
-      (symbol-value 'helm-alive-p)))
 ;;make "M-x" run "helm-M-x"
 (global-set-key (kbd "M-x") 'helm-M-x)
 ;;set helm resize mode and adjust the min and max size of helm buffer
@@ -203,6 +206,11 @@ current window."
 ;;(straight-use-package 'magithub)
 
 
+(straight-use-package 'flycheck)
+(add-hook 'after-init-hook 'global-flycheck-mode)
+(setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+
+
 
 ;;; Languages:
 ;; haskell
@@ -212,12 +220,30 @@ current window."
     (add-to-list 'company-backends 'company-ghc))
 
 ;; ruby
+(straight-use-package 'robe)
+(add-hook 'ruby-mode-hook 'robe-mode)
+(if (bound-and-true-p company-candidates)
+    (add-to-list 'company-backends 'company-robe))
+(with-eval-after-load 'smartparens
+  (sp-with-modes
+      '(ruby-mode)
+    (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
+
 ;; c-c++
+(setq c-default-style "gnu") ;; set style to "linux"
+(with-eval-after-load 'smartparens
+  (sp-with-modes
+      '(c++-mode objc-mode c-mode)
+    (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
+
+
 ;; python
-;; scala
 ;; also maybe:
+;; scala
 ;; elixir
 ;; nim
 ;; java
 
 ;; get something as emacs help (helpful or something)
+
+(global-set-key (kbd "RET") 'newline-and-indent)

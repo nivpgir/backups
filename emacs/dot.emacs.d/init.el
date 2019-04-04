@@ -90,12 +90,6 @@ current window."
 ;; first things first...
 ;; delete selection mode
 (delete-selection-mode t)
-;; match parens ;; TODO: missing show full expression and change highlight color
-(show-paren-mode t)
-(setq show-paren-style 'expression)
-(straight-use-package 'smartparens)
-(require 'smartparens-config)
-(smartparens-global-mode)
 ;; centered point ;; if this will be problematic then consider using: https://www.emacswiki.org/emacs/centered-cursor-mode.el
 ;;(straight-use-package
 ;; '(centered-point-mode :type git :host github :repo "jmercouris/emacs-centered-point"))
@@ -111,8 +105,22 @@ current window."
 	(t (remove-hook 'post-command-hook 'line-change)))
   )
 (centered-point-mode t)
-(straight-use-package 'smart-newline)
-(smart-newline-mode t)
+;; match parens
+(show-paren-mode t)
+
+(straight-use-package 'smartparens)
+(require 'smartparens)
+(require 'smartparens-config)
+(smartparens-global-mode)
+(setq show-paren-style 'expression)
+
+(straight-use-package 'which-key)
+(require 'which-key)
+(which-key-mode t)
+(which-key-setup-minibuffer)
+(setq which-key-popup-type 'minibuffer)
+
+
 
 
 ;; expand region with C-:
@@ -154,6 +162,7 @@ current window."
 ;; Company
 ;; remember that navigating in the popup is done with M-n and M-p
 (straight-use-package 'company)
+(require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Helm
@@ -203,6 +212,7 @@ current window."
 
 ;; magit
 (straight-use-package 'magit)
+(require 'magit)
 ;;(straight-use-package 'magithub)
 
 

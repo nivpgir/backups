@@ -13,13 +13,17 @@
   (load bootstrap-file nil 'nomessage))
 
 
+(require 'tramp)
 
 ;; My Functions and configs
 (define-prefix-command 'my-keymap nil "niv")
 (global-set-key (kbd "M-m") 'my-keymap)
 (defun compose (f g)
   `(lambda (x) (,f (,g x))))
-
+;; setup splitting windows
+(define-key 'my-keymap (kbd "-") 'split-window-below)
+(define-key 'my-keymap (kbd "/") 'split-window-right)
+(define-key 'my-keymap (kbd "w <backspace>") 'delete-window)
 (defun prelude-move-beginning-of-line (arg)
   "Move point back to indentation of beginning of line.
 
@@ -50,9 +54,8 @@ point reaches the beginning or end of the buffer, stop there."
   (yank)
   (open-line 1)
   (forward-line 1)
-  (yank)
-  )
-(global-set-key (kbd "C-c d") 'duplicate-line)
+  (yank))
+(define-key 'my-keymap (kbd "d") 'duplicate-line)
 (defun alternate-buffer (&optional window)
   "Switch back and forth between current and last buffer in the
 current window."
@@ -70,10 +73,10 @@ current window."
                      (mapcar #'car (window-prev-buffers window)))
          ;; `other-buffer' honors `buffer-predicate' so no need to filter
          (other-buffer current-buffer t)))))
-(global-set-key (kbd "M-m <tab>") 'alternate-buffer)
+(define-key 'my-keymap (kbd "<tab>") 'alternate-buffer)
 
 ;;unbinding C-m from RET
-(define-key input-decode-map [?\C-m] [C-m])
+;; (define-key input-decode-map [?\C-m] [C-m]) ;; without this we can't RET doesn't work in terminal
 ;;use ibuffer instead of list-buffers
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 ;;enable line numbers always
@@ -165,33 +168,30 @@ current window."
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; Helm
-(straight-use-package 'helm)
-(require 'helm)
-(require 'helm-config)
-(setq helm-split-window-inside-p t)
-(setq helm-always-two-windows nil)
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-;;make "M-x" run "helm-M-x"
-(global-set-key (kbd "M-x") 'helm-M-x)
-;;set helm resize mode and adjust the min and max size of helm buffer
-(helm-autoresize-mode t)
-(setq helm-autoresize-max-height 35)
-(setq helm-autoresize-min-height 35)
-;;configure the show kill ring
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;;configure helm-mini
-(global-set-key (kbd "C-x b") 'helm-mini)
-;;use helm's find-file instead of normal one
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-;;use C-c h o for helm occur:
-(global-set-key (kbd "C-c h o") 'helm-occur)
-(setq helm-M-x-fuzzy-match t)
-(setq helm-buffers-fuzzy-matching t
-      helm-recentf-fuzzy-match    t)
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
+;; ivy
+(straight-use-package 'ivy)
+(straight-use-package 'swiper)
+(straight-use-package 'counsel)
+(ivy-mode 1)
+
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
+
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "M-m h f") 'counsel-describe-function)
+(global-set-key (kbd "M-m h v") 'counsel-describe-variable)
+(global-set-key (kbd "M-m h l") 'counsel-find-library)
+(global-set-key (kbd "M-m h i") 'counsel-info-lookup-symbol)
+(global-set-key (kbd "M-m i u") 'counsel-unicode-char)
+
+(global-set-key (kbd "C-c c") 'counsel-compile)
+(global-set-key (kbd "C-c g") 'counsel-git)
+(global-set-key (kbd "C-c j") 'counsel-git-grep)
+(global-set-key (kbd "C-c k") 'counsel-ag)
+(global-set-key (kbd "C-x l") 'counsel-locate)
+
 
 
 (custom-set-variables
@@ -213,6 +213,7 @@ current window."
 ;; magit
 (straight-use-package 'magit)
 (require 'magit)
+(define-key 'my-keymap (kbd "g s") 'magit-status)
 ;;(straight-use-package 'magithub)
 
 
@@ -257,3 +258,5 @@ current window."
 ;; get something as emacs help (helpful or something)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
+
+;; fix RET in terminal

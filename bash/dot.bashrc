@@ -1,18 +1,13 @@
-
 #
 # ~/.bashrc
 #
 
-# set -x
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
-fi
-if [ -f ~/.work_aliases ]; then
-    . ~/.work_aliases
 fi
 
 ### Completioning ###
@@ -36,40 +31,45 @@ if [ -d ~/.local/etc/bash_completion.d ]; then
     done
 fi
 
-export EDITOR=$EMACS_TERM_CLIENT
-export VISUAL=$EMACS_TERM_CLIENT
+export EDITOR=em
+export VISUAL=emacs
 export BROWSER='chromium'
 
-source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
 
 function parse_git_branch {
     git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-if [ "$PS1" ]; then
-    # If this is an xterm set the title to user@host:dir
-    case $TERM in
-        xterm*|rxvt*)
-            PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
-            ;;
-        *)
-            ;;
-    esac
-fi
-
+function venv_name {
+		local venvname=${VIRTUAL_ENV##*/}
+		if [[ -z "$venvname" ]]; then
+				echo ""
+		else
+				echo "($venvname)"
+		fi
+}
 
 set_prompt(){
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'
     White='\[\e[01;37m\]'
-    Red='\[\e[01;31m\]'
+    BoldRed='\[\e[01;31m\]'
+    Red='\[\e[00;31m\]'
     Green='\[\e[01;32m\]'
-    Orcam1='\[\e[00;36m\]'
+		Yellow='\[\e[1;32m\]'
+		Orange='\[\e[38;5;202m\]'
+		Swamp='\[\e[38;5;58m\]'
+    LightSwamp='\[\e[38;5;106m\]'
+		Orcam1='\[\e[01;36m\]'
     Orcam2='\[\e[01;33m\]'
-    Reset='\[\033\e[0m\]'
+    Reset='\[\e[0m\]'
     FancyX='\342\234\227'
     Checkmark='\342\234\223'
     NoColor='\[\e[0m\]'
+		OrangeBG='\[\e[48;5;202m\]'
+		SwampBG='\[\e[48;5;58m\]'
+		git_branch_bg=$Orange
+		py_venv_bg=$LightSwamp
 
 
     PS1=""
@@ -83,7 +83,9 @@ set_prompt(){
 	      PS1XTERM="${Red}X "
     fi
 
-    export PS1="${PS1}${White}"'[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]] $(parse_git_branch)\n\[\033[1;32m\]$ \[\033[00m\]'
+    # export PS1="${PS1}${White}"'[\t] [\[\033[0;31m\]\u@\h\[\033[00m\]] [\[\033[1;36m\]\w\[\033[00m\]]$(parse_git_branch)$(venv_name)\n\[\033[1;32m\]$ \[\033[00m\]'
+
+		export PS1="${PS1}${White}""[\t] [$Red\u@\h$Reset] [$Orcam1\w$Reset]$git_branch_bg$(parse_git_branch)$Reset$py_venv_bg$(venv_name)$Reset\n$Yellow$ $Reset"
 
 }
 
@@ -96,13 +98,8 @@ shopt -s histappend
 HISTSIZE=1000000
 HISTFILESIZE=2000000
 HISTFILE=/home/$USER/.histfile
-if [ "$PS1" ]; then
-    # don't put duplicate lines in the history. See bash(1) for more options
-    export HISTCONTROL=ignoredups
-fi
-
-
-
+export HISTCONTROL=ignoredups
+shopt -s checkwinsize
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -110,8 +107,6 @@ shopt -s checkwinsize
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
-
-shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -123,40 +118,20 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Set usefule variables for the env
-export tcdir=$HOME/local/toolchains
-export brdir=$HOME/local/buildroots
-
-function maybe_add_ssh_key(){
-    if ! ssh-add -l > /dev/null; then
-        echo line1
-        ssh-add $1
-    elif ! ssh-add -l | grep -q `ssh-keygen -lf $1  | awk '{print $2}'`; then
-        echo line2
-        ssh-add $1
-    fi
-}
 
 
+### NVM ###
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# source ~/.local/bin/ssh-find-agent.sh
-# set_ssh_agent_socket
-if ! pgrep ssh-agent > /dev/null; then
-    eval `ssh-agent` && echo ssh-agent started successfully
-else
-    echo ssh-agent already running
-fi
 
-# (pgrep ssh-agent > /dev/null && [[ $? == 1 ]] && eval `ssh-agent` && \
-#      echo ssh-agent started successfully ) || \
-#     ( pgrep ssh-agent > /dev/null && [[ $? == 0 ]] && echo ssh-agent already running ) || \
-#     echo ssh-agent failed to start
-maybe_add_ssh_key /orcam/env/scripts/baseunit_ssh_key/id_rsa
-maybe_add_ssh_key ~/.ssh/id_bitbucket_rsa
-
+### Python virtualenv ###
+export WORKON_HOME=~/.py_venvs
+source ~/.local/bin/virtualenvwrapper.sh

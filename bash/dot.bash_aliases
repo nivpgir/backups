@@ -8,6 +8,7 @@ alias egrep='egrep --color=auto'
 alias ls='ls -CFh --color=auto'
 alias ll='ls -lhF --color=auto'
 alias lal='ls -alhF --color=auto'
+alias lla='ls -alhF --color=auto'
 alias la='ls -ahF --color=auto'
 alias l='ls -CFh --color=auto'
 
@@ -16,10 +17,11 @@ alias d='dirs -v'
 
 alias mv='mv -i'
 
-EMACS_CLIENT="emacsclient -c -n -a ''"
-EMACS_TERM_CLIENT="emacsclient -c -t -a ''"
-alias em="$EMACS_TERM_CLIENT $@"
-alias emacs="$EMACS_CLIENT $@"
+EMACS_CLIENT="emacsclient -q -c -n -a ''"
+EMACS_TERM_CLIENT="emacsclient -q -c -t -a ''"
+# alias em="$EMACS_TERM_CLIENT -t $@"
+alias em="emacs --no-window-system $@"
+alias emacs="emacs $@"
 
 # Add an "alert" alias for long running commands.  Use like so:
 # e.g  sleep 10; alert

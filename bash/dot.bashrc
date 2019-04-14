@@ -48,7 +48,7 @@ function venv_name {
 				echo "($venvname)"
 		fi
 }
-
+source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
 set_prompt(){
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'

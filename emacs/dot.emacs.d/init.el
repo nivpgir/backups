@@ -260,3 +260,5 @@ current window."
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; fix RET in terminal
+
+(tool-bar-mode -1)

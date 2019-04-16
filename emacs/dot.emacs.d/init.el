@@ -270,6 +270,10 @@ current window."
 (add-hook 'rust-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+(with-eval-after-load 'smartparens
+  (sp-with-modes
+      '(rust-mode)
+    (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
 
 
 ;; python

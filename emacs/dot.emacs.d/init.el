@@ -75,6 +75,12 @@ current window."
          (other-buffer current-buffer t)))))
 (define-key 'my-keymap (kbd "<tab>") 'alternate-buffer)
 
+(defun indent-buffer ()
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max) nil)))
+(global-set-key (kbd "M-<tab>") 'indent-buffer)
+
 ;;unbinding C-m from RET
 ;; (define-key input-decode-map [?\C-m] [C-m]) ;; without this we can't RET doesn't work in terminal
 ;;use ibuffer instead of list-buffers
@@ -246,6 +252,13 @@ current window."
   (sp-with-modes
       '(c++-mode objc-mode c-mode)
     (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
+
+;; racket
+(straight-use-package 'racket-mode)
+
+;; rust
+(straight-use-package 'rust-mode)
+(straight-use-package 'cargo)
 
 
 ;; python

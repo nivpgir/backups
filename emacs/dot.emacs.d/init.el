@@ -259,6 +259,9 @@ current window."
 ;; rust
 (straight-use-package 'rust-mode)
 (straight-use-package 'cargo)
+(add-hook 'rust-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
 
 
 ;; python

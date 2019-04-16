@@ -31,8 +31,8 @@ if [ -d ~/.local/etc/bash_completion.d ]; then
     done
 fi
 
-export EDITOR=$EMACS_TERM_CLIENT
-export VISUAL=$EMACS_TERM_CLIENT
+export EDITOR=em
+export VISUAL=emacs
 export BROWSER='chromium'
 
 
@@ -48,7 +48,7 @@ function venv_name {
 				echo "($venvname)"
 		fi
 }
-
+source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
 set_prompt(){
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'
@@ -130,6 +130,34 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Set useful variables for the env
+export tcdir=$HOME/local/toolchains
+export brdir=$HOME/local/buildroots
+
+function maybe_add_ssh_key(){
+    if ! ssh-add -l > /dev/null; then
+        echo line1
+        ssh-add $1
+    elif ! ssh-add -l | grep -q `ssh-keygen -lf $1  | awk '{print $2}'`; then
+        echo line2
+        ssh-add $1
+    fi
+}
+# source ~/.local/bin/ssh-find-agent.sh
+# set_ssh_agent_socket
+if ! pgrep ssh-agent > /dev/null; then
+    eval `ssh-agent` && echo ssh-agent started successfully
+else
+    echo ssh-agent already running
+fi
+
+# (pgrep ssh-agent > /dev/null && [[ $? == 1 ]] && eval `ssh-agent` && \
+#      echo ssh-agent started successfully ) || \
+#     ( pgrep ssh-agent > /dev/null && [[ $? == 0 ]] && echo ssh-agent already running ) || \
+#     echo ssh-agent failed to start
+maybe_add_ssh_key /orcam/env/scripts/baseunit_ssh_key/id_rsa
+maybe_add_ssh_key ~/.ssh/id_bitbucket_rsa
 
 
 ### Python virtualenv ###

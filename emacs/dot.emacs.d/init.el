@@ -259,9 +259,21 @@ current window."
 ;; rust
 (straight-use-package 'rust-mode)
 (straight-use-package 'cargo)
+(straight-use-package 'flycheck-rust)
+(straight-use-package 'racer)
+(setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
+(setq racer-rust-src-path "~/local/gits/rust/src") ;; Rust source code PATH
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
 (add-hook 'rust-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c <tab>") #'rust-format-buffer)))
+(with-eval-after-load 'smartparens
+  (sp-with-modes
+      '(rust-mode)
+    (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
 
 
 ;; python
@@ -276,3 +288,5 @@ current window."
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; fix RET in terminal
+
+(tool-bar-mode -1)

@@ -79,7 +79,7 @@ current window."
   (interactive)
   (save-excursion
     (indent-region (point-min) (point-max) nil)))
-(global-set-key (kbd "M-<tab>") 'indent-buffer)
+(define-key (current-global-map) (kbd "M-<tab>") 'indent-buffer)
 
 ;;unbinding C-m from RET
 ;; (define-key input-decode-map [?\C-m] [C-m]) ;; without this we can't RET doesn't work in terminal

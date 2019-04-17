@@ -75,11 +75,22 @@ current window."
          (other-buffer current-buffer t)))))
 (define-key 'my-keymap (kbd "<tab>") 'alternate-buffer)
 
+;; indent whole buffer
 (defun indent-buffer ()
   (interactive)
   (save-excursion
     (indent-region (point-min) (point-max) nil)))
-(global-set-key (kbd "M-<tab>") 'indent-buffer)
+(define-key (current-global-map) (kbd "M-<tab>") 'indent-buffer)
+
+;; go to init.el
+(defun find-user-init-file ()
+  "Edit the `user-init-file', in another window."
+  (interactive)
+  (find-file user-init-file))
+(define-key 'my-keymap (kbd "I") 'find-user-init-file)
+(define-key (current-global-map) (kbd "M-n") (lambda () (interactive) (scroll-up 1)))
+(define-key (current-global-map) (kbd "M-p") (lambda () (interactive) (scroll-down 1)))
+
 
 ;;unbinding C-m from RET
 ;; (define-key input-decode-map [?\C-m] [C-m]) ;; without this we can't RET doesn't work in terminal
@@ -252,6 +263,9 @@ current window."
   (sp-with-modes
       '(c++-mode objc-mode c-mode)
     (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
+
+;; dts
+(straight-use-package 'dts-mode)
 
 ;; racket
 (straight-use-package 'racket-mode)

@@ -264,6 +264,9 @@ current window."
       '(c++-mode objc-mode c-mode)
     (sp-local-pair "{" nil :post-handlers '(:add ("||\n[i]" "RET")))))
 
+;; dts
+(straight-use-package 'dts-mode)
+
 ;; racket
 (straight-use-package 'racket-mode)
 

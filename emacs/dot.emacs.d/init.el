@@ -90,6 +90,11 @@ current window."
 (define-key 'my-keymap (kbd "I") 'find-user-init-file)
 (define-key (current-global-map) (kbd "M-n") (lambda () (interactive) (scroll-up 1)))
 (define-key (current-global-map) (kbd "M-p") (lambda () (interactive) (scroll-down 1)))
+(defun insert-current-date ()
+  (interactive)
+  (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
+
+
 
 
 ;;unbinding C-m from RET

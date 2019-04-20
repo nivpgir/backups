@@ -1,0 +1,27 @@
+* how to setup taffybar:
+** install stack manually:
+   this depends on the OS, but the easiest is probably just to install manually:
+   wget https://get.haskellstack.org/stable/linux-x86_64.tar.gz
+   mv linux-x86_64.tar.gz stack-linux-x86_64.tar.gz
+   mkdir -p stack && cd stack
+   mv ../stack-linux-x86_64.tar.gz ./
+   tar xvf stack-linux-x86_64.tar.gz
+   cd stack-*linux-x86_64/	# replace * with stack version or let bash do it for you
+   cp stack $HOME/.local/bin/	# assuming $HOME/.local/bin/ is in the PATH
+   stack setup
+   stack upgrade
+
+** install taffybar from it's git:
+   # I've verified the below snippet lastly at 2019-04-20
+   curl -sSL https://raw.githubusercontent.com/taffybar/taffybar/master/quick-start.sh | bash
+
+** install stack run
+   this works only on older versions of stack (at least by the time of writing this doc)
+   latest working version that I know of is lts-11.16 so make sure the
+   stack global-stack-project yaml is set to this version
+
+** use the config:
+   copy taffybar.hs and stack.yaml to $HOME/.config/taffybar/ and run:
+   cd $HOME/.config/taffybar/
+   # this might need to change to my-taffybar not sure yet
+   stack run taffybar

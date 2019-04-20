@@ -32,10 +32,9 @@ import XMonad.Hooks.DynamicLog
 
 -- for taffybar
 import           XMonad.Hooks.EwmhDesktops        (ewmh)
-import           System.Taffybar.Support.PagerHints (pagerHints)
+-- import           System.Taffybar.Support.PagerHints (pagerHints)
 
 import System.Directory (getHomeDirectory)
-import Data.String.Interpolate -- string interpolation
 import Text.Printf -- string formatting
 -- for using xmonad with a destop environment
 import XMonad.Config.Desktop
@@ -310,7 +309,7 @@ myStartupHook = do
   spawn "systemctl --user restart xcape.service"
 --  return ()
 
-myStatusbar = "taffybar"
+myStatusbar = "my-taffybar"
 
 
 -- A structure containing your configuration settings, overriding

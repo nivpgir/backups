@@ -48,7 +48,7 @@ function venv_name {
 				echo "($venvname)"
 		fi
 }
-source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after
+
 set_prompt(){
     Last_Command=$? # Must come first!
     Blue='\[\e[01;34m\]'
@@ -131,7 +131,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Set useful variables for the env
+[[ -f $HOME/.local_bashrc ]] && . $HOME/.local_bashrc
+
+source /orcam/env/scripts/rcfile # this also sets the prompt, so you have to override it after# Set useful variables for the env
 export tcdir=$HOME/local/toolchains
 export brdir=$HOME/local/buildroots
 
@@ -158,6 +160,7 @@ fi
 #     echo ssh-agent failed to start
 maybe_add_ssh_key /orcam/env/scripts/baseunit_ssh_key/id_rsa
 maybe_add_ssh_key ~/.ssh/id_bitbucket_rsa
+
 
 
 ### Python virtualenv ###

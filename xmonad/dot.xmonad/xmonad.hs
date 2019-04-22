@@ -20,6 +20,10 @@ import System.Exit
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+-- Layouts
+-- import XMonad.Layout.StackTile
+import XMonad.Layout.Accordion
+
 -- Utilities for keybindings
 import XMonad.Util.NamedActions
 import XMonad.Util.EZConfig
@@ -236,7 +240,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
+-- ||| StackTile 1 (3/100) (1/2)
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled = Tall nmaster delta ratio

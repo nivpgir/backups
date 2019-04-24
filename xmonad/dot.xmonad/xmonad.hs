@@ -240,7 +240,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
+myLayout = avoidStruts $ Mirror Accordion ||| tiled ||| Mirror tiled ||| Full
 -- ||| StackTile 1 (3/100) (1/2)
   where
     -- default tiling algorithm partitions the screen into two panes

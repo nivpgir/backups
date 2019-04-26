@@ -71,12 +71,12 @@ main = do
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "termite"
+myTerminal      = "gnome-terminal"
 
-xkbcmd locXkbConfDir = printf "xkbcomp -I%s %s/keymap/custom :0 " locXkbConfDir locXkbConfDir -- $DISPLAY""
+xkbcmd localXkbConfDir = printf "xkbcomp -I%s %s/keymap/custom :0 " localXkbConfDir localXkbConfDir -- $DISPLAY""
 fixKbdSetup = do
   hd <- getHomeDirectory
-  spawn $ xkbcmd $ hd ++ "/.config/i3/xkbconf"
+  spawn $ xkbcmd $ hd ++ "/dotfiles/i3/xkbconf"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool

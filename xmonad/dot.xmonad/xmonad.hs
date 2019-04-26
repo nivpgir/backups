@@ -220,7 +220,7 @@ myLayout = avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
     -- default tiling algorithm partitions the screen into two panes
     tiled = Tall nmaster delta ratio
     nmaster = 1
-    ratio   = 2/3 -- Default proportion of screen occupied by master pane
+    ratio   = 4/7 -- Default proportion of screen occupied by master pane
     delta   = 3/100 -- Percent of screen to increment by when resizing panes
 
 myStatusbar = "my-taffybar"

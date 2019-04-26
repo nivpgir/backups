@@ -1,4 +1,6 @@
 * how to setup taffybar:
+** dependecies (partial list)
+   sudo pacman -S upower libdbusmenu-gtk3 libxss
 ** install stack manually:
    this depends on the OS, but the easiest is probably just to install manually:
    wget https://get.haskellstack.org/stable/linux-x86_64.tar.gz

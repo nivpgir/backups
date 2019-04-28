@@ -8,12 +8,15 @@
  shell/utils/bourne-expansion-utils
  json
  racket/string
+ (only-in racket curry curryr)
  (for-syntax racket/syntax
              syntax/parse
              racket/base
              ))
 
 (provide (all-defined-out)
+         curry
+         curryr
          (all-from-out racket/list
                        racket/file
                        racket/format
@@ -169,13 +172,19 @@
   (make-rename-transformer #'=basic-object-pipe/expression=))
 
 
-;; i3-msg -t get_workspaces =object-pipe= string->jsexpr |> filter (lambda (j) (hash-ref j 'focused)) |> first  |> hash-ref _ 'name
-
+;; this works:
+;; i3-msg rename workspace to #{i3-msg -t get_workspaces |>> string->jsexpr =filter= (curryr hash-ref 'focused) |> first |> hash-ref _ 'num | cat |>> string-append _ ":" _ ":" "HIHI"}
+;; this doesn't:
 (define (rename-workspace new-name)
-  (let* ([i3-json (string->jsexpr #{i3-msg -t get_workspaces})]
-         [cur-ws (first (filter (lambda (j) (hash-ref j 'focused)) i3-json))]
-         [num-cur-ws (hash-ref cur-ws 'num)]
-         [old-name (hash-ref cur-ws 'name)])
-    {i3-msg rename workspace to (string-append num-cur-ws ":" num-cur-ws ":" new-name)}))
+  (let* ([get-focused-ws (lambda (h) (first (filter (curryr hash-ref 'focused) h)))]
+         [make-ws-name (lambda (num name)
+                         (string-append num ":" num ":" (string-replace new-name
+                                                         #px"\\s+" "-")))])
+         {i3-msg rename workspace to
+                 (make-ws-name (number->string
+                                (hash-ref (get-focused-ws
+                                           (string->jsexpr #{i3-msg -t get_workspaces}))
+                                          'num))
+                               new-name)}))
 
 

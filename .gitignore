@@ -1,3 +1,7 @@
 *.lyx~
 *.lyx#
 .gitignore~
+*.elc
+
+emacs/dot.emacs.d/*
+!emacs/dot.emacs.d/init.el

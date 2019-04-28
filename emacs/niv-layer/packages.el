@@ -30,7 +30,10 @@
 ;;; Code:
 
 (defconst niv-layer-packages
-  '( )
+  '(
+    ;; centered-cursor-mode
+    ;; (carp-mode :location local)
+    )
   "The list of Lisp packages required by the niv-layer layer.
 
 Each entry is either:
@@ -59,7 +62,15 @@ Each entry is either:
         recipe.  See: https://github.com/milkypostman/melpa#recipe-format")
 
 (defun niv-layer/init-centered-cursor-mode ()
-  ;;    (global-centered-cursor-mode +1)
+    ;;(global-centered-cursor-mode +1)
   )
-
+(defun niv-layer/init-carp-mode ()
+  (require 'carp-mode)
+  (require 'inf-carp-mode)
+  (require 'carp-flycheck)
+  (add-to-list 'auto-mode-alist '("\\.carp\\'" . carp-mode))
+  (add-hook 'carp-mode-hook
+            (lambda ()
+              (flycheck-mode 1)))
+  )
 ;;; packages.el ends here

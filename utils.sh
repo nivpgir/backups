@@ -25,6 +25,8 @@ backup_if_exists(){
 prefix_basename(){
     # if it's a hidden file, we need to prefix "dot" to it,
     # cause that's how I keep dotfiles in the repo
+    # arg1: a path (can be full path) to a file to be prefixed
+    # arg2: the name of the variable to which to assign the prefixed path
     local base=`basename $1`
     # local dir=`dirname $1`
     local prefixed=${base/./dot.}

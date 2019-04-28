@@ -4,11 +4,21 @@
     (displayln "Failed to set envarg \"EMACS_CLIENT\""))
 (if (putenv "EMACS_TERM_CLIENT" "emacsclient -c -t -a \"\"") (void)
     (displayln "Failed to set envarg \"EMACS_TERM_CLIENT\""))
-(if (putenv "BROWSER" "google-chrome") (void)
+(if (putenv "BROWSER" "chromium") (void)
     (displayln "Failed to set envarg \"BROWSER\""))
 
 (require-if-file-exists "rash-aliases.rkt")
 
-;; (if (find-executable-path "dircolors")
-;;     #{dircolors -b ~/.dircolors}
-;;     (print "bye"))
+(if (find-executable-path "dircolors")
+    #{dircolors -b ~/.dircolors}
+    (print "bye"))
+
+
+;; annoying things with rash:
+;; - no history
+;; - no pushd
+;; - running rash scripts take too long to boot
+;; - running rash scripts doesn't require "rashrc.rkt" nor runs rashrc
+;;
+;; Questions:
+;; how to I pipe the return value from a racket function back to a unix pipe

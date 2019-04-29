@@ -14,14 +14,14 @@
 import System.IO
 
 import XMonad
-import Data.Monoid
 import System.Exit
 
 import qualified XMonad.StackSet as W
-import qualified Data.Map        as M
+
+-- Window gaps
+import XMonad.Layout.Spacing
 
 -- Layouts
--- import XMonad.Layout.StackTile
 import XMonad.Layout.Accordion
 
 -- Utilities for keybindings
@@ -32,7 +32,6 @@ import XMonad.Util.EZConfig
 import XMonad.Hooks.ManageDocks
 -- for xmobar
 import XMonad.Util.Run(spawnPipe)
-import XMonad.Hooks.DynamicLog
 
 -- for taffybar
 import           XMonad.Hooks.EwmhDesktops        (ewmh)
@@ -51,7 +50,10 @@ import XMonad.Config.Desktop
 
 main = do
   fixKbdSetup
+  -- with this the laptop screen closes when lid is closed
+  spawn "xrandr --output eDP-1 --auto"
   spawn myStatusbar
+  spawn myTerminal
   xmonad
     $ ewmh
     $ docks 
@@ -86,8 +88,8 @@ showKeybindings x = addName "Show Keybindings" $ io $ do
     hClose h
     return ()
 
-myKeys conf = mkNamedKeymap conf
-  [ ("M-RET", spawn' $ myTerminal)
+myKeys conf = mkNamedKeymap conf $
+  [ ("M-<Return>", spawn' $ myTerminal)
   , ("M-p"  , spawn' "dmenu_run")
   , ("M-<Backspace>", addName "Close Window" $ kill)
   , ("M-<Space>", sendMessage' NextLayout)
@@ -106,23 +108,27 @@ myKeys conf = mkNamedKeymap conf
   , ("M-l", sendMessage' (IncMasterN (-1)))
   , ("M-S-<Escape>", addName "Exit" $ io (exitWith ExitSuccess))
   , ("M-C-c", spawn' "xmonad --recompile && xmonad --restart")
-  , ("C-S-k", spawn' $ xkbcmd "/home/nivpgir/.config/i3/xkbconf")
+  , ("C-S-k", spawn' $ xkbcmd "/home/nivpgir/dotfiles/i3/xkbconf")
   ]
-  -- ++ [
-  --
+  ++
   -- mod-[1..9], Switch to workspace N
   -- mod-shift-[1..9], Move client to workspace N
+  [("M-" ++ secondMod ++ k, addName ("Move to / Move window to workspace " ++ k) $ windows $ f i)
+  | (i, k) <- zip (XMonad.workspaces conf) (map show [1..9])
+  , (f, secondMod) <- [(W.greedyView, ""), (W.shift, "S-")]]
+  ++
+  -- mod-{z,x,c}, Switch to physical/Xinerama screens 1, 2, or 3
+  -- mod-shift-{z,x,c}, Move client to screen 1, 2, or 3
+  [ ("M-"++secondMod++key , addName ("change/move screen to" ++ key) (screenWorkspace sc >>= flip whenJust (windows . f)))
+  | (key, sc) <- zip ["z", "x", "c"] [0..]
+  , (f, secondMod) <- [(W.view, ""), (W.shift, "S-")]]  -- ++ [
   --
-  -- ("M-" ++ secondMod ++ k, windows $ f i) | (i, k) <- zip (XMonad.workspaces conf) (map show [1..9])
-  --                                     , (f, secondMod) <- [(W.greedyView, ""), (W.shift, "S-")]]
-  -- -- ("M-F1", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
   --
-  -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-  -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+  
+  -- ("M-F1", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
   --
-  -- [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-  -- | (key, sc) <- zip [xK_z, xK_x, xK_c] [0..]
-  -- , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+  --(m .|. modm, key)
+
 
 
 -- myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -215,7 +221,10 @@ myKeys conf = mkNamedKeymap conf
 --         | (key, sc) <- zip [xK_z, xK_x, xK_c] [0..]
 --         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-myLayout = avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
+windowsGap = 5
+screenGap = 1
+myLayout = spacingRaw True (Border 0 screenGap screenGap screenGap) True (Border 0 windowsGap windowsGap windowsGap) True $
+  avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled = Tall nmaster delta ratio

@@ -48,6 +48,8 @@ import XMonad.Config.Desktop
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 
+-- xrandr command for screens at work:
+-- xrandr --output DP-1 --rotate normal --pos 1080x450 --output DP-2 --rotate left --pos 0x0
 main = do
   fixKbdSetup
   -- with this the laptop screen closes when lid is closed

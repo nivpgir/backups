@@ -94,7 +94,7 @@ current window."
   (interactive)
   (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
-
+(define-key 'my-keymap (kbd "c") 'compile)
 
 
 ;;unbinding C-m from RET

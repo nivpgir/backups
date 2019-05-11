@@ -12,76 +12,84 @@
 -------------
 
 import System.IO
-
 import XMonad
 import System.Exit
-
 import qualified XMonad.StackSet as W
-
--- Window gaps
-import XMonad.Layout.Spacing
-
--- Layouts
-import XMonad.Layout.Accordion
-
--- Utilities for keybindings
-import XMonad.Util.NamedActions
+import XMonad.Layout.Spacing    -- Window gaps
+import XMonad.Layout.Accordion  -- Layouts
+import XMonad.Util.NamedActions -- Utilities for keybindings;
 import XMonad.Util.EZConfig
-
--- for status bar
-import XMonad.Hooks.ManageDocks
--- for xmobar
-import XMonad.Util.Run(spawnPipe)
-
--- for taffybar
-import           XMonad.Hooks.EwmhDesktops        (ewmh)
--- import           System.Taffybar.Support.PagerHints (pagerHints)
-
+import XMonad.Hooks.ManageDocks -- for status bar
+import XMonad.Util.Run(spawnPipe) -- for xmobar
+import XMonad.Hooks.EwmhDesktops        (ewmh) -- for taffybar
 import System.Directory (getHomeDirectory)
 import Text.Printf -- string formatting
--- for using xmonad with a destop environment
-import XMonad.Config.Desktop
-
-------------------------------------------------------------------------
--- Now run xmonad with all the defaults we set up.
-
--- Run xmonad with the settings you specify. No need to modify this.
---
-
--- xrandr command for screens at work:
--- xrandr --output DP-1 --rotate normal --pos 1080x450 --output DP-2 --rotate left --pos 0x0
+import XMonad.Config.Desktop -- for using xmonad with a destop environment
+import XMonad.Hooks.DynamicLog  -- dzen
+import XMonad.Util.Loggers  -- dzen
+import XMonad.Actions.Navigation2D -- up down left right
+-- import XMonad.Action.GridSelect
 main = do
   fixKbdSetup
   -- with this the laptop screen closes when lid is closed
   spawn "xrandr --output eDP-1 --auto"
-  spawn myStatusbar
-  spawn myTerminal
+  spawn "stalonetray"
+  d <- spawnPipe myStatusbar
   xmonad
+    $ withNavigation2DConfig nav2DConf $ additionalNav2DKeysP ("w", "a", "s", "d") [("M-", windowGo), ("M-S-", windowSwap)] False 
     $ ewmh
     $ docks 
     $ addDescrKeys' ((myModMask, xK_F1), showKeybindings) myKeys
-    $ myConf
+    $ desktopConfig {
+    layoutHook = avoidStruts $ myLayout
+    , logHook = myLogHook d
+    , manageHook = manageDocks
+    , terminal = myTerminal
+    , modMask = myModMask
+    , focusFollowsMouse = False
+    }
 
-
-myConf = desktopConfig {
-  layoutHook         = myLayout ||| layoutHook desktopConfig
-  , terminal           = myTerminal
-  , modMask            = myModMask
-  }
-
--- manage xmobar as a bar (don't overrun it etc...)
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
+-- myLogHook h = dynamicLogWithPP $ byorgeyPP
+myLogHook h = dynamicLogWithPP $ defaultPP
+    -- display current workspace as darkgrey on light grey (opposite of default colors)
+    { ppCurrent         = dzenColor "#303030" "#909090" . pad 
+    -- display other workspaces which contain windows as a brighter grey
+    , ppHidden          = dzenColor "#909090" "" . pad 
+    -- display other workspaces with no windows as a normal grey
+    , ppHiddenNoWindows = dzenColor "#606060" "" . pad 
+    -- display the current layout as a brighter grey
+    , ppLayout          = dzenColor "#909090" "" . pad 
+    -- if a window on a hidden workspace needs my attention, color it so
+    , ppUrgent          = dzenColor "#ff0000" "" . pad . dzenStrip
+    -- shorten if it goes over 100 characters
+    , ppTitle           = shorten 100
+    -- no separator between workspaces
+    , ppWsSep           = ""
+    -- put a few spaces between each object
+    , ppSep             = "  "
+    -- output to the handle we were given as an argument
+    , ppOutput          = hPutStrLn h
+    , ppExtras           = [ date "%D %T"
+                           , loadAvg]
+    }
+    -- dzenColor "green"
+    
+-- myConf logHookPipe = desktopConfig {
+--   layoutHook = avoidStruts $ myLayout
+--   -- , logHook = myLogHook logHookPipe
+--   , manageHook = manageDocks
+--   , terminal = myTerminal
+--   , modMask = myModMask
+--   }
+------------------------------------------------------------------------
 myTerminal      = "gnome-terminal"
-
+------------------------------------------------------------------------
 xkbcmd localXkbConfDir = printf "xkbcomp -I%s %s/keymap/custom :0 " localXkbConfDir localXkbConfDir -- $DISPLAY""
 fixKbdSetup = do
   hd <- getHomeDirectory
   spawn $ xkbcmd $ hd ++ "/dotfiles/i3/xkbconf"
 ------------------------------------------------------------------------
 myModMask       = mod3Mask
-myWorkspaces    = map show [1..9]
 ------------------------------------------------------------------------
 showKeybindings :: [((KeyMask, KeySym), NamedAction)] -> NamedAction
 showKeybindings x = addName "Show Keybindings" $ io $ do
@@ -90,6 +98,12 @@ showKeybindings x = addName "Show Keybindings" $ io $ do
     hClose h
     return ()
 
+
+
+nav2DConf = def { defaultTiledNavigation = centerNavigation
+                , layoutNavigation   = [("Full", centerNavigation)]
+                , unmappedWindowRect = [("Full", singleWindowRect)]
+                }
 myKeys conf = mkNamedKeymap conf $
   [ ("M-<Return>", spawn' $ myTerminal)
   , ("M-p"  , spawn' "dmenu_run")
@@ -97,6 +111,29 @@ myKeys conf = mkNamedKeymap conf $
   , ("M-<Space>", sendMessage' NextLayout)
   , ("M-S-<Space>", addName "Default layout" $ setLayout $ XMonad.layoutHook conf)
   , ("M-n", addName "Refresh" $ refresh)
+    -- Switch between layers
+  , ("M-f", addName "Switch Layer" $ switchLayer)
+  -- Directional navigation of windows
+  -- , ("M-d", addName "windowGo R" $ windowGo R False)
+  -- , ("M-a", addName "windowGo L" $ windowGo L False)
+  -- , ("M-w", addName "windowGo U" $ windowGo U False)
+  -- , ("M-s", addName "windowGo D" $ windowGo D False)
+  
+  -- , ("M-S-d", addName "windowSwap R" $ windowSwap R False)
+  -- , ("M-S-a", addName "windowSwap L" $ windowSwap L False)
+  -- , ("M-S-w", addName "windowSwap U" $ windowSwap U False)
+  -- , ("M-S-s", addName "windowSwap D" $ windowSwap D False)
+  
+  -- , ("M-C-d", addName "windowToScreen R" $ windowToScreen R False)
+  -- , ("M-C-a", addName "windowToScreen L" $ windowToScreen L False)
+  -- , ("M-C-w", addName "windowToScreen U" $ windowToScreen U False)
+  -- , ("M-C-s", addName "windowToScreen D" $ windowToScreen D False)
+  
+    -- Send window to adjacent screen
+  -- , ((modm .|. mod1Mask,    xK_r    ), windowToScreen R False)
+  -- , ((modm .|. mod1Mask,    xK_l    ), windowToScreen L False)
+  -- , ((modm .|. mod1Mask,    xK_u    ), windowToScreen U False)
+  -- , ((modm .|. mod1Mask,    xK_d    ), windowToScreen D False)
   , ("M-d", addName "Focus next window" $ windows W.focusDown)
   , ("M-s", addName "Focus previos window" $ windows W.focusUp)
   , ("M-a", addName "Focus Master" $ windows W.focusMaster)
@@ -123,115 +160,19 @@ myKeys conf = mkNamedKeymap conf $
   -- mod-shift-{z,x,c}, Move client to screen 1, 2, or 3
   [ ("M-"++secondMod++key , addName ("change/move screen to" ++ key) (screenWorkspace sc >>= flip whenJust (windows . f)))
   | (key, sc) <- zip ["z", "x", "c"] [0..]
-  , (f, secondMod) <- [(W.view, ""), (W.shift, "S-")]]  -- ++ [
-  --
-  --
-  
-  -- ("M-F1", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
-  --
-  --(m .|. modm, key)
+  , (f, secondMod) <- [(W.view, ""), (W.shift, "S-")]]
+------------------------------------------------------------------------
 
-
-
--- myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
-
---     -- launch a terminal
---     [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
-
---     -- launch dmenu
---     , ((modm,               xK_p     ), spawn "dmenu_run")
-
---     -- close focused window
---     , ((modm, xK_BackSpace     ), kill)
-
---      -- Rotate through the available layout algorithms
---     , ((modm,               xK_space ), sendMessage NextLayout)
-
---     --  Reset the layouts on the current workspace to default
---     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
-
---     -- Resize viewed windows to the correct size
---     , ((modm,               xK_n     ), refresh)
-
---     -- Move focus to the next window
---     , ((modm,               xK_d     ), windows W.focusDown)
-
---     -- Move focus to the previous window
---     , ((modm,               xK_s     ), windows W.focusUp  )
-
---     -- Move focus to the master window
---     , ((modm,               xK_a     ), windows W.focusMaster  )
-
---     -- Swap the focused window with the next window
---     , ((modm .|. shiftMask, xK_d     ), windows W.swapDown  )
-
---     -- Swap the focused window with the previous window
---     , ((modm .|. shiftMask, xK_s     ), windows W.swapUp    )
-
---     -- Swap the focused window and the master window
---     , ((modm .|. shiftMask, xK_a), windows W.swapMaster)
-
---     -- Shrink the master area
---     , ((modm,               xK_minus     ), sendMessage Shrink)
-
---     -- Expand the master area
---     , ((modm,               xK_equal     ), sendMessage Expand)
-
---     -- Push window back into tiling
---     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
-
---     -- Increment the number of windows in the master area
---     , ((modm              , xK_m ), sendMessage (IncMasterN 1))
-
---     -- Deincrement the number of windows in the master area
---     , ((modm              , xK_l), sendMessage (IncMasterN (-1)))
-
---     -- Toggle the status bar gap
---     -- Use this binding with avoidStruts from Hooks.ManageDocks.
---     -- See also the statusBar function from Hooks.DynamicLog.
---     --
---     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
-
---     -- Quit xmonad
---     , ((modm .|. shiftMask, xK_Escape     ), io (exitWith ExitSuccess))
-
---     -- Restart xmonad
---     , ((modm .|. controlMask, xK_c     ), spawn "xmonad --recompile && xmonad --restart")
---     , ((controlMask .|. shiftMask, xK_k), spawn $ xkbcmd "/home/nivpgir/.config/i3/xkbconf")
---     -- Run xmessage with a summary of the default keybindings (useful for beginners)
---     , ((modm, xK_F1 ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
---     , ((mod1Mask, xK_F2 ), spawn ("echo \"" ++ "mod1" ++ "\" | xmessage -file -"))
---     , ((mod3Mask, xK_F2 ), spawn ("echo \"" ++ "mod3" ++ "\" | xmessage -file -"))
---     , ((mod4Mask, xK_F2 ), spawn ("echo \"" ++ "mod4" ++ "\" | xmessage -file -"))    
---     ]
---     ++
-
---     --
---     -- mod-[1..9], Switch to workspace N
---     -- mod-shift-[1..9], Move client to workspace N
---     --
---     [((m .|. modm, k), windows $ f i)
---         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
---         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
---     ++
-
---     --
---     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
---     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
---     --
---     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
---         | (key, sc) <- zip [xK_z, xK_x, xK_c] [0..]
---         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
-windowsGap = 5
-screenGap = 1
+------------------------------------------------------------------------
 myLayout = spacingRaw True (Border 0 screenGap screenGap screenGap) True (Border 0 windowsGap windowsGap windowsGap) True $
-  avoidStruts $ Accordion ||| tiled ||| Mirror tiled ||| Full
+   Accordion ||| tiled ||| Mirror tiled ||| Full
   where
+    windowsGap = 5
+    screenGap = 1
     -- default tiling algorithm partitions the screen into two panes
     tiled = Tall nmaster delta ratio
     nmaster = 1
     ratio   = 4/7 -- Default proportion of screen occupied by master pane
     delta   = 3/100 -- Percent of screen to increment by when resizing panes
 
-myStatusbar = "my-taffybar"
+myStatusbar =  "dzen2 -dock -p -xs 1 -ta l -e 'onstart=lower'"

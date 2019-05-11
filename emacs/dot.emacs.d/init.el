@@ -14,7 +14,7 @@
 
 
 (require 'tramp)
-
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
 ;; My Functions and configs
 (define-prefix-command 'my-keymap nil "niv")
 (global-set-key (kbd "M-m") 'my-keymap)
@@ -309,3 +309,5 @@ current window."
 ;; fix RET in terminal
 
 (tool-bar-mode -1)
+
+

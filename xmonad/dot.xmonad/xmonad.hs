@@ -1,10 +1,14 @@
---
--- xmonad example config file.
---
--- A template showing all available configuration hooks,
--- and how to override the defaults in your own xmonad.hs conf file.
---
--- Normally, you'd only override those defaults you care about.
+-- TODO:
+-- dzen coloring
+-- dzen aligne clock to the right
+-- maybe more dzen utilities (memory, battery, etc...)
+-- HARD: dynamically created workspaces
+-- HARD: named workspaces
+-- Gridselect for dynamically created workspaces
+-- HARD: dynamic SubLayouts (something that can set the slave area to use some sublayout dynamically, so I can have a
+--       master window and all slaves can switch between tabbed, stacked, tiled etc... layouts), not even sure this
+--       is possible and even if it is then it probably means writing a package/module from zero to make this happen
+--       so it will probably never happen
 --
 
 -------------
@@ -28,15 +32,21 @@ import XMonad.Config.Desktop -- for using xmonad with a destop environment
 import XMonad.Hooks.DynamicLog  -- dzen
 import XMonad.Util.Loggers  -- dzen
 import XMonad.Actions.Navigation2D -- up down left right
+
+--TESTING AREA
+
+------------------
 -- import XMonad.Action.GridSelect
 main = do
   fixKbdSetup
   -- with this the laptop screen closes when lid is closed
   spawn "xrandr --output eDP-1 --auto"
-  spawn "stalonetray"
-  d <- spawnPipe myStatusbar
+  -- kill previous tray and dzen before starting a new 1
+  -- waiting 1 second in the hopes it will be enough to for pkill to finish before the new one starts
+  spawn "pkill stalonetray && sleep 1 && stalonetray"
+  d <- spawnPipe ("pkill dzen2 && sleep 1 && " ++ myStatusbar)
   xmonad
-    $ withNavigation2DConfig nav2DConf $ additionalNav2DKeysP ("w", "a", "s", "d") [("M-", windowGo), ("M-S-", windowSwap)] False 
+    $ withNavigation2DConfig nav2DConf $ additionalNav2DKeysP ("w", "a", "s", "d") [("M-", windowGo), ("M-S-", windowSwap)] True
     $ ewmh
     $ docks 
     $ addDescrKeys' ((myModMask, xK_F1), showKeybindings) myKeys
@@ -143,8 +153,8 @@ myKeys conf = mkNamedKeymap conf $
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
-myLayout = spacingRaw True (Border 0 screenGap screenGap screenGap) True (Border 0 windowsGap windowsGap windowsGap) True $
-   Accordion ||| tiled ||| Mirror tiled ||| Full
+myLayout = spacingRaw True (Border 0 screenGap screenGap screenGap) True (Border 0 windowsGap windowsGap windowsGap) True
+  $ Accordion ||| tiled ||| Mirror tiled ||| Full
   where
     windowsGap = 5
     screenGap = 1
